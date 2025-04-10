@@ -20,6 +20,13 @@ This project is a proof of concept for a modular monolith architecture using Nes
 
 ```bash
 $ npm install
+
+# local database
+$ ./scripts/local_setup.sh
+
+# tooling: @nestjs/cli
+$ npm install -g @nestjs/cli
+
 ```
 
 ## Compile and run the project
