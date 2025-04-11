@@ -1,5 +1,6 @@
 import { User } from '../domain/user.aggregate';
 import { UserOrm } from '../orm/user.orm';
+import { UserDto } from '../dto/user.dto';
 
 export class UserMapper {
   static toDomain(userOrm: UserOrm): User {
@@ -12,5 +13,13 @@ export class UserMapper {
     userOrm.email = user.getEmail();
     userOrm.name = user.getName();
     return userOrm;
+  }
+
+  static toDto(user: User): UserDto {
+    return {
+      id: user.getId(),
+      email: user.getEmail(),
+      name: user.getName(),
+    };
   }
 }
