@@ -24,8 +24,9 @@ $ npm install
 # local database
 $ ./scripts/local_setup.sh
 
-# tooling: @nestjs/cli
+# tooling: @nestjs/cli, aws-cdk
 $ npm install -g @nestjs/cli
+$ npm install -g aws-cdk
 
 ```
 
