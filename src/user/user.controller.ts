@@ -6,13 +6,16 @@ import {
   Param,
   Delete,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { User } from './domain/user.aggregate';
 import { ParseEmailPipe } from './utils/parse-email.pipe';
+import { DummyGuard } from '@/auth/dummy/dummy.guard';
 
+@UseGuards(DummyGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
