@@ -7,5 +7,6 @@ import { UserMapper } from './persistence/user.mapper';
 @Module({
   controllers: [UserController],
   providers: [UserService, UserRepository, UserMapper],
+  exports: [UserService],
 })
 export class UserModule {}

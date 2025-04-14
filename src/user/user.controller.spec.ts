@@ -75,7 +75,9 @@ describe('UserController', () => {
 
     it('should throw NotFoundException when user does not exist', async () => {
       const email = 'nonexistent@example.com';
-      jest.spyOn(userService, 'findOne').mockResolvedValue(mockUser);
+      jest
+        .spyOn(userService, 'findOne')
+        .mockRejectedValue(new NotFoundException('User not found'));
 
       await expect(controller.findOne(email)).rejects.toThrow(
         NotFoundException,

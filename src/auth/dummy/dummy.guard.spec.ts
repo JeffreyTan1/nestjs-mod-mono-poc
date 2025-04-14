@@ -1,14 +1,27 @@
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, NotFoundException } from '@nestjs/common';
 import { DummyGuard } from './dummy.guard';
 import { UserRequest } from '../types';
+import { UserService } from '@/user/user.service';
+import { User } from '@/user/domain/user.aggregate';
 
 describe('DummyGuard', () => {
-  it('should be defined', () => {
-    expect(new DummyGuard()).toBeDefined();
+  let mockUserService: jest.Mocked<UserService>;
+
+  beforeEach(() => {
+    mockUserService = {
+      findOne: jest.fn(),
+    } as unknown as jest.Mocked<UserService>;
   });
 
-  it('should return true and set user when valid email:id token is provided', () => {
-    const guard = new DummyGuard();
+  it('should be defined', () => {
+    expect(new DummyGuard(mockUserService)).toBeDefined();
+  });
+
+  it('should return true and set user when valid email:id token is provided', async () => {
+    const guard = new DummyGuard(mockUserService);
+    const user = new User('test@example.com', '123');
+    mockUserService.findOne.mockResolvedValue(user);
+
     const request: UserRequest = {
       headers: {
         authorization: '123:test@example.com',
@@ -19,16 +32,13 @@ describe('DummyGuard', () => {
         getRequest: () => request,
       }),
     };
-    const result = guard.canActivate(context as ExecutionContext);
+    const result = await guard.canActivate(context as ExecutionContext);
     expect(result).toBe(true);
-    expect(request.user).toEqual({
-      id: '123',
-      email: 'test@example.com',
-    });
+    expect(request.user).toEqual(user);
   });
 
-  it('should return false when no token is provided', () => {
-    const guard = new DummyGuard();
+  it('should return false when no token is provided', async () => {
+    const guard = new DummyGuard(mockUserService);
     const request: UserRequest = {
       headers: {},
     } as UserRequest;
@@ -37,12 +47,12 @@ describe('DummyGuard', () => {
         getRequest: () => request,
       }),
     };
-    const result = guard.canActivate(context as ExecutionContext);
+    const result = await guard.canActivate(context as ExecutionContext);
     expect(result).toBe(false);
   });
 
-  it('should return false when invalid token format is provided', () => {
-    const guard = new DummyGuard();
+  it('should return false when invalid token format is provided', async () => {
+    const guard = new DummyGuard(mockUserService);
     const request: UserRequest = {
       headers: {
         authorization: 'invalid-token',
@@ -53,7 +63,27 @@ describe('DummyGuard', () => {
         getRequest: () => request,
       }),
     };
-    const result = guard.canActivate(context as ExecutionContext);
+    const result = await guard.canActivate(context as ExecutionContext);
+    expect(result).toBe(false);
+  });
+
+  it('should return false when user is not found', async () => {
+    const guard = new DummyGuard(mockUserService);
+    mockUserService.findOne.mockRejectedValue(
+      new NotFoundException('User not found'),
+    );
+
+    const request: UserRequest = {
+      headers: {
+        authorization: '123:test@example.com',
+      },
+    } as UserRequest;
+    const context = {
+      switchToHttp: () => ({
+        getRequest: () => request,
+      }),
+    };
+    const result = await guard.canActivate(context as ExecutionContext);
     expect(result).toBe(false);
   });
 });

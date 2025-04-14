@@ -1,9 +1,5 @@
 import { Request } from 'express';
-
-export type User = {
-  id: string;
-  email: string;
-};
+import { User } from '@/user/domain/user.aggregate';
 
 export type UserRequest = Request & {
   user: User;

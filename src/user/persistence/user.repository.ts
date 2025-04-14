@@ -10,7 +10,7 @@ export class UserRepository implements IUserRepository {
     private readonly userMapper: UserMapper,
   ) {}
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: {
         email,
@@ -19,18 +19,18 @@ export class UserRepository implements IUserRepository {
     return user ? UserMapper.toDomain(user) : null;
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { id } });
     return user ? UserMapper.toDomain(user) : null;
   }
 
-  async save(user: User) {
+  async save(user: User): Promise<User> {
     const userOrm = UserMapper.toOrm(user);
     const savedUserOrm = await this.userRepository.save(userOrm);
     return UserMapper.toDomain(savedUserOrm);
   }
 
-  async delete(user: User) {
+  async delete(user: User): Promise<void> {
     const userOrm = UserMapper.toOrm(user);
     await this.userRepository.delete(userOrm);
   }

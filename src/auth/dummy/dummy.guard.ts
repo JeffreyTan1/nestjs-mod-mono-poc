@@ -4,15 +4,16 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { User, UserRequest } from '../types';
+import { UserRequest } from '../types';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class DummyGuard implements CanActivate {
   private readonly logger = new Logger(DummyGuard.name);
 
-  constructor() {}
+  constructor(private readonly userService: UserService) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<UserRequest>();
     const token = this.extractTokenFromHeader(request);
 
@@ -22,7 +23,13 @@ export class DummyGuard implements CanActivate {
     }
 
     try {
-      request.user = this.decryptToken(token);
+      const { email } = this.decryptToken(token);
+      const user = await this.userService.findOne(email);
+      if (!user) {
+        this.logUnauthenticatedRequest('User not found.');
+        return false;
+      }
+      request.user = user;
       return true;
     } catch (error) {
       this.logUnauthenticatedRequest('Token is invalid.', error);
@@ -41,8 +48,7 @@ export class DummyGuard implements CanActivate {
     return request.headers.authorization;
   }
 
-  // Simulates a JWT decryption
-  private decryptToken(token: string): User {
+  private decryptToken(token: string): { id: string; email: string } {
     const parts = token.split(':');
     if (parts.length !== 2) {
       throw new Error('Invalid token format. Expected format: id:email');
