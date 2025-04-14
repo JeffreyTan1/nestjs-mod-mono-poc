@@ -15,6 +15,8 @@ export class SsmConstruct extends Construct {
   constructor(scope: Construct, id: string, props: SsmConstructProps) {
     super(scope, id);
 
+    console.log('props', props);
+
     this.parameters = {};
     this.secrets = {};
   }
