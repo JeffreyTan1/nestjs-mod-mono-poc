@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { User, UserRequest } from './types';
+import { User, UserRequest } from '../types';
 
 @Injectable()
 export class DummyGuard implements CanActivate {
@@ -43,7 +43,11 @@ export class DummyGuard implements CanActivate {
 
   // Simulates a JWT decryption
   private decryptToken(token: string): User {
-    const [email, id] = token.split(':');
+    const parts = token.split(':');
+    if (parts.length !== 2) {
+      throw new Error('Invalid token format. Expected format: id:email');
+    }
+    const [id, email] = parts;
     return {
       id,
       email,
