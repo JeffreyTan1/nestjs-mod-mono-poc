@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { DateService } from './common/utils/date/date.service';
 
+export const OK_STATUS = 'ok';
+
 @Controller()
 export class AppController {
   constructor(private readonly dateService: DateService) {}
@@ -8,7 +10,7 @@ export class AppController {
   @Get('health')
   getHealth() {
     return {
-      status: 'ok',
+      status: OK_STATUS,
       timestamp: this.dateService.getCurrentDate(),
     };
   }
