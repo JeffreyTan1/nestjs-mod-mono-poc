@@ -21,10 +21,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "openapi-ts": "openapi-typescript --enum ./contracts/swagger.json -o ./contracts/openapi-ts.schema.ts",
-    "migration:generate": "TODO",
-    "migration:create": "TODO",
-    "migration:run": "TODO",
-    "migration:revert": "TODO"
+    "migration:generate": "ts-node scripts/typeorm-scripts.ts generate",
+    "migration:create": "ts-node scripts/typeorm-scripts.ts create",
+    "migration:run": "ts-node scripts/typeorm-scripts.ts run",
+    "migration:revert": "ts-node scripts/typeorm-scripts.ts revert"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
