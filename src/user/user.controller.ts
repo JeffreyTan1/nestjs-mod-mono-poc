@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { User } from './domain/user.aggregate';
+import { ParseEmailPipe } from './utils/parse-email.pipe';
 
 @Controller('user')
 export class UserController {
@@ -23,7 +24,7 @@ export class UserController {
   }
 
   @Get(':email')
-  async findOne(@Param('email') email: string) {
+  async findOne(@Param('email', ParseEmailPipe) email: string) {
     const user = await this.userService.findOne(email);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -32,7 +33,7 @@ export class UserController {
   }
 
   @Delete(':email')
-  async remove(@Param('email') email: string) {
+  async remove(@Param('email', ParseEmailPipe) email: string) {
     await this.userService.remove(email);
   }
 
