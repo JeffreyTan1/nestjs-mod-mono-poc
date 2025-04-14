@@ -31,21 +31,25 @@ export class DummyGuard implements CanActivate {
       }
       request.user = user;
       return true;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      this.logUnauthenticatedRequest('Token is invalid.', error);
+      this.logUnauthenticatedRequest('Token is invalid.');
       return false;
     }
   }
 
-  private logUnauthenticatedRequest(details: string, error?: unknown): void {
-    this.logger.warn(`An unauthenticated request was made. ${details}`);
-    if (error) {
-      this.logger.error(error);
-    }
+  private logUnauthenticatedRequest(details: string): void {
+    this.logger.warn(`${details}`);
   }
 
   private extractTokenFromHeader(request: UserRequest): string | undefined {
-    return request.headers.authorization;
+    const token = request.headers.authorization?.split('Bearer ').at(1);
+    if (!token) {
+      throw new Error(
+        'Invalid authorization header format. Expected format: Bearer token',
+      );
+    }
+    return token;
   }
 
   private decryptToken(token: string): { id: string; email: string } {
@@ -54,9 +58,6 @@ export class DummyGuard implements CanActivate {
       throw new Error('Invalid token format. Expected format: id:email');
     }
     const [id, email] = parts;
-    return {
-      id,
-      email,
-    };
+    return { id, email };
   }
 }
