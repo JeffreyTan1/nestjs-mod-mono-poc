@@ -2,7 +2,7 @@ import { Request } from 'express';
 
 export type User = {
   id: string;
-  // TODO: add more fields
+  email: string;
 };
 
 export type UserRequest = Request & {
