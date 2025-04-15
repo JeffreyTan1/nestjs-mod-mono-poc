@@ -1,10 +1,14 @@
-import { IsDefined, IsEnum, IsObject, IsString } from 'class-validator';
+import { IsEnum, IsObject, IsString } from 'class-validator';
 import { FileType } from '../domain/file-type.enum';
 import { ApiProperty } from '@nestjs/swagger';
+import { StorageStrategy } from '../domain/storage/storage-strategy.enum';
 
 export class CreateFileDto {
   @ApiProperty()
-  @IsDefined()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
   @IsEnum(FileType)
   fileType: FileType;
 
@@ -12,8 +16,7 @@ export class CreateFileDto {
   @IsObject()
   metadata: Record<string, string>;
 
-  // TODO, add enum in the domain layer
   @ApiProperty()
-  @IsString()
-  storageStrategy: string;
+  @IsEnum(StorageStrategy)
+  storageStrategy: StorageStrategy;
 }

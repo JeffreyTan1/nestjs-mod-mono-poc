@@ -1,13 +1,13 @@
-import { IsObject, IsString } from 'class-validator';
+import { IsEnum, IsObject } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { StorageStrategy } from '../domain/storage/storage-strategy.enum';
 
 export class AddNewVersionDto {
   @ApiProperty()
   @IsObject()
   metadata: Record<string, string>;
 
-  // TODO, add enum in the domain layer
   @ApiProperty()
-  @IsString()
-  storageStrategy: string;
+  @IsEnum(StorageStrategy)
+  storageStrategy: StorageStrategy;
 }

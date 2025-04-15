@@ -1,8 +1,8 @@
 import { IStorageStrategy } from '../domain/storage/storage-strategy.interface';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-
-export class FileSystemStorageStrategy implements IStorageStrategy {
+import { StorageStrategy } from '../domain/storage/storage-strategy.enum';
+export class LocalStorageStrategy implements IStorageStrategy {
   private readonly basePath = join(
     __dirname,
     '..',
@@ -10,7 +10,6 @@ export class FileSystemStorageStrategy implements IStorageStrategy {
     '..',
     'file-system-storage',
   );
-  private readonly name = 'file-system';
 
   async storeAndReturnIdentifier(
     fileId: string,
@@ -32,7 +31,7 @@ export class FileSystemStorageStrategy implements IStorageStrategy {
     await fs.unlink(filePath);
   }
 
-  getName(): string {
-    return this.name;
+  getStorageStrategy(): StorageStrategy {
+    return StorageStrategy.LOCAL;
   }
 }

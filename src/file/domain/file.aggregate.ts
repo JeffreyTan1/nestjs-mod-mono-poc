@@ -34,8 +34,8 @@ export class File extends BaseAggregate {
     this.softDeleted = softDeleted ?? false;
   }
 
-  static create(content: Buffer, fileType: FileType) {
-    const file = new File('TODO extract from Buffer', fileType, null, [], []);
+  static create(name: string, fileType: FileType) {
+    const file = new File(name, fileType, null, [], []);
     return file;
   }
 
@@ -43,7 +43,7 @@ export class File extends BaseAggregate {
     content: Buffer,
     userId: string,
     storageStrategy: IStorageStrategy,
-    metadata?: Metadata,
+    metadata: Metadata | null,
   ) {
     const versionNumber = this.getNextVersionNumber();
 
@@ -57,7 +57,7 @@ export class File extends BaseAggregate {
     const version = new Version(
       versionNumber,
       'TODO: mimetype',
-      storageStrategy.getName(),
+      storageStrategy.getStorageStrategy(),
       storageIdentifier,
       metadata,
     );

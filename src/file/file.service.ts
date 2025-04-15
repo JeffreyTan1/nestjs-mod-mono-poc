@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IFileRepository } from './domain/file-repository.interface';
 import { IStorageStrategyFactory } from './domain/storage/storage-strategy-factory.interface';
-import { Metadata } from './domain/metadata.vo';
+import { Metadata, MetadataProps } from './domain/metadata.vo';
 import { File } from './domain/file.aggregate';
 import { FileType } from './domain/file-type.enum';
-
+import { StorageStrategy } from './domain/storage/storage-strategy.enum';
 @Injectable()
 export class FileService {
   constructor(
@@ -22,24 +22,32 @@ export class FileService {
 
   async create(
     userId: string,
-    content: Buffer,
+    name: string,
     fileType: FileType,
-    metadata?: Record<string, string>,
+    content: Buffer,
+    storageStrategy: StorageStrategy,
+    metadata?: MetadataProps,
   ) {
-    const file = File.create(content, fileType);
+    const file = File.create(name, fileType);
     await this.fileRepository.save(file);
-    await this.addNewVersion(file.getId(), userId, content, 'local', metadata);
+    await this.addNewVersion(
+      file.getId(),
+      userId,
+      content,
+      storageStrategy,
+      metadata,
+    );
   }
 
   async addNewVersion(
     id: string,
     userId: string,
     content: Buffer,
-    storageStrategyName: string,
-    metadata?: Record<string, string>,
+    storageStrategy: StorageStrategy,
+    metadata?: MetadataProps,
   ) {
-    const storageStrategy =
-      this.storageStrategyFactory.getStrategy(storageStrategyName);
+    const _storageStrategy =
+      this.storageStrategyFactory.getStrategy(storageStrategy);
 
     const file = await this.fileRepository.findById(id);
     if (!file) {
@@ -49,8 +57,8 @@ export class FileService {
     await file.addNewVersion(
       content,
       userId,
-      storageStrategy,
-      metadata ? new Metadata(metadata) : undefined,
+      _storageStrategy,
+      metadata ? new Metadata(metadata) : null,
     );
 
     return this.fileRepository.save(file);
