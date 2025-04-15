@@ -4,27 +4,34 @@ import { Version } from '../version.entity';
 import { User } from '@/user/domain/user.aggregate';
 
 export class Activity extends BaseEntity {
+  private readonly reason: string;
   private readonly operation: Operation;
+
   private readonly previousVersion: Version | null;
   private readonly newVersion: Version;
-  private readonly reason: string;
   private readonly actor: User;
   private readonly timestamp: Date;
 
   constructor(
+    reason: string,
     operation: Operation,
     previousVersion: Version | null,
     newVersion: Version,
-    reason: string,
     actor: User,
+    timestamp: Date,
     id?: string,
   ) {
     super(id);
+    this.reason = reason;
     this.operation = operation;
     this.previousVersion = previousVersion;
     this.newVersion = newVersion;
-    this.reason = reason;
     this.actor = actor;
+    this.timestamp = timestamp;
+  }
+
+  public getReason(): string {
+    return this.reason;
   }
 
   public getOperation(): Operation {
@@ -37,10 +44,6 @@ export class Activity extends BaseEntity {
 
   public getNewVersion(): Version {
     return this.newVersion;
-  }
-
-  public getReason(): string {
-    return this.reason;
   }
 
   public getActor(): User {

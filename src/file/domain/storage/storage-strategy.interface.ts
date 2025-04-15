@@ -1,6 +1,5 @@
 export interface IStorageStrategy {
-  identifier: string;
-
+  getIdentifier(): string;
   store(file: File): Promise<void>;
   retrieveUrl(path: string): Promise<string>;
   delete(path: string): Promise<void>;
