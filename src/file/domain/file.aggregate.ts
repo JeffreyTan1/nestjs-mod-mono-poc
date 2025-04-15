@@ -37,6 +37,8 @@ export class File extends BaseAggregate {
     storageStrategy: IStorageStrategy,
   ) {
     const versionNumber = this.getNextVersionNumber();
+
+    // TODO: get mime type from content, store in the storage strategy
     const version = new Version(
       versionNumber,
       'TODO: mimetype',
@@ -64,7 +66,7 @@ export class File extends BaseAggregate {
     this.currentVersion = version;
     this.history.push(
       new Activity(
-        Operation.RESTORE,
+        Operation.RESTORE_VERSION,
         this.currentVersion,
         version,
         userId,

@@ -28,10 +28,6 @@ export class Activity extends BaseEntity {
     this.reason = reason ?? null;
   }
 
-  public getReason(): string | null {
-    return this.reason;
-  }
-
   public getOperation(): Operation {
     return this.operation;
   }
@@ -50,5 +46,9 @@ export class Activity extends BaseEntity {
 
   public getTimestamp(): Date {
     return this.timestamp;
+  }
+
+  public getReason(): string | null {
+    return this.reason;
   }
 }
