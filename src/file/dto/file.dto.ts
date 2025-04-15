@@ -5,6 +5,8 @@ export class FileDto {
   id: string;
 
   @ApiProperty()
+  name: string;
+  @ApiProperty()
   fileType: string;
 
   @ApiProperty()

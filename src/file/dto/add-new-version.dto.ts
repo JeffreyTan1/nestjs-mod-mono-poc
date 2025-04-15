@@ -9,5 +9,5 @@ export class AddNewVersionDto {
 
   @ApiProperty()
   @IsEnum(StorageStrategyType)
-  storageStrategy: StorageStrategyType;
+  storageStrategyType: StorageStrategyType;
 }

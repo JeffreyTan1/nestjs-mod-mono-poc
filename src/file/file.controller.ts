@@ -7,7 +7,6 @@ import {
   UseInterceptors,
   UseGuards,
   UploadedFile,
-  NotFoundException,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { ParseUUIDV4Pipe } from '@/common/utils/parse-uuid-v4.pipe';
@@ -29,15 +28,12 @@ export class FileController {
   @Get()
   async findAll() {
     const files = await this.fileService.findAll();
-    return this.toFileDtos(files);
+    return this.toFileDtoList(files);
   }
 
   @Get(':id')
   async findById(@Param('id', new ParseUUIDV4Pipe()) id: string) {
     const file = await this.fileService.findById(id);
-    if (!file) {
-      throw new NotFoundException('File not found');
-    }
     return this.toFileDto(file);
   }
 
@@ -48,11 +44,14 @@ export class FileController {
     @Body() createFileDto: CreateFileDto,
     @UserCtx() userId: string,
   ) {
+    const { name, fileType, metadata, storageStrategyType } = createFileDto;
     return this.fileService.create(
       userId,
+      name,
+      fileType,
       file.buffer,
-      createFileDto.fileType,
-      createFileDto.metadata,
+      storageStrategyType,
+      metadata,
     );
   }
 
@@ -64,12 +63,13 @@ export class FileController {
     @Body() addFileVersionDto: AddNewVersionDto,
     @UserCtx() userId: string,
   ) {
+    const { storageStrategyType, metadata } = addFileVersionDto;
     return this.fileService.addNewVersion(
       id,
       userId,
       file.buffer,
-      addFileVersionDto.storageStrategy,
-      addFileVersionDto.metadata,
+      storageStrategyType,
+      metadata,
     );
   }
 
@@ -80,12 +80,8 @@ export class FileController {
     @Body() restoreVersionDto: RestoreVersionDto,
     @UserCtx() userId: string,
   ) {
-    return this.fileService.restoreVersion(
-      id,
-      userId,
-      versionId,
-      restoreVersionDto.reason,
-    );
+    const { reason } = restoreVersionDto;
+    return this.fileService.restoreVersion(id, userId, versionId, reason);
   }
 
   @Post(':id/delete')
@@ -94,16 +90,18 @@ export class FileController {
     @Body() deleteFileDto: DeleteFileDto,
     @UserCtx() userId: string,
   ) {
-    await this.fileService.softDelete(id, userId, deleteFileDto.reason);
+    const { reason } = deleteFileDto;
+    await this.fileService.softDelete(id, userId, reason);
   }
 
-  private toFileDtos(files: File[]): FileDto[] {
+  private toFileDtoList(files: File[]): FileDto[] {
     return files.map((file) => this.toFileDto(file));
   }
 
   private toFileDto(file: File): FileDto {
     return {
       id: file.getId(),
+      name: file.getName(),
       fileType: file.getFileType(),
       createdAt: file.getCreatedAt(),
       updatedAt: file.getUpdatedAt(),

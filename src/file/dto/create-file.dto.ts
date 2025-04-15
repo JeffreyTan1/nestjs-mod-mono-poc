@@ -18,5 +18,5 @@ export class CreateFileDto {
 
   @ApiProperty()
   @IsEnum(StorageStrategyType)
-  storageStrategy: StorageStrategyType;
+  storageStrategyType: StorageStrategyType;
 }
