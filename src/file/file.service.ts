@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IFileRepository } from './domain/file-repository.interface';
 import { IStorageStrategyFactory } from './domain/storage/storage-strategy-factory.interface';
 import { Metadata } from './domain/metadata.vo';
+import { File } from './domain/file.aggregate';
+import { FileType } from './domain/file-type.enum';
 
 @Injectable()
 export class FileService {
@@ -18,8 +20,10 @@ export class FileService {
     return this.fileRepository.findById(id);
   }
 
-  create() {
-    // const file = new File().create()
+  async create(userId: string, content: Buffer, fileType: FileType) {
+    const file = File.create(content, fileType);
+    await this.fileRepository.save(file);
+    await this.addNewVersion(file.getId(), userId, content, {}, 'local');
   }
 
   async addNewVersion(

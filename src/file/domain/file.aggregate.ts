@@ -34,6 +34,11 @@ export class File extends BaseAggregate {
     this.softDeleted = softDeleted ?? false;
   }
 
+  static create(content: Buffer, fileType: FileType) {
+    const file = new File('TODO extract from Buffer', fileType, null, [], []);
+    return file;
+  }
+
   public async addNewVersion(
     content: Buffer,
     userId: string,

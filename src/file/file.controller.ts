@@ -48,7 +48,7 @@ export class FileController {
     @Body() createFileDto: CreateFileDto,
     @UserCtx() userId: string,
   ) {
-    // return this.fileService.create(userId, file.buffer, createFileDto);
+    return this.fileService.create(userId, file.buffer, createFileDto);
   }
 
   @Post(':id/version')
