@@ -48,7 +48,12 @@ export class FileController {
     @Body() createFileDto: CreateFileDto,
     @UserCtx() userId: string,
   ) {
-    return this.fileService.create(userId, file.buffer, createFileDto);
+    return this.fileService.create(
+      userId,
+      file.buffer,
+      createFileDto.fileType,
+      createFileDto.metadata,
+    );
   }
 
   @Post(':id/version')
@@ -63,8 +68,8 @@ export class FileController {
       id,
       userId,
       file.buffer,
-      addFileVersionDto.metadata,
       addFileVersionDto.storageStrategy,
+      addFileVersionDto.metadata,
     );
   }
 

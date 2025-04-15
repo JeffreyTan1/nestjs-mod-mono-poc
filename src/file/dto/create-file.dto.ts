@@ -6,7 +6,7 @@ export class CreateFileDto {
   @ApiProperty()
   @IsDefined()
   @IsEnum(FileType)
-  fileType: string;
+  fileType: FileType;
 
   @ApiProperty()
   @IsObject()

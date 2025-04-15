@@ -42,8 +42,8 @@ export class File extends BaseAggregate {
   public async addNewVersion(
     content: Buffer,
     userId: string,
-    metadata: Metadata,
     storageStrategy: IStorageStrategy,
+    metadata?: Metadata,
   ) {
     const versionNumber = this.getNextVersionNumber();
 
@@ -57,9 +57,9 @@ export class File extends BaseAggregate {
     const version = new Version(
       versionNumber,
       'TODO: mimetype',
-      metadata,
       storageStrategy.getName(),
       storageIdentifier,
+      metadata,
     );
 
     const activity = new Activity(

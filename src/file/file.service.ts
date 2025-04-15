@@ -20,18 +20,23 @@ export class FileService {
     return this.fileRepository.findById(id);
   }
 
-  async create(userId: string, content: Buffer, fileType: FileType) {
+  async create(
+    userId: string,
+    content: Buffer,
+    fileType: FileType,
+    metadata?: Record<string, string>,
+  ) {
     const file = File.create(content, fileType);
     await this.fileRepository.save(file);
-    await this.addNewVersion(file.getId(), userId, content, {}, 'local');
+    await this.addNewVersion(file.getId(), userId, content, 'local', metadata);
   }
 
   async addNewVersion(
     id: string,
     userId: string,
     content: Buffer,
-    metadata: Record<string, string>,
     storageStrategyName: string,
+    metadata?: Record<string, string>,
   ) {
     const storageStrategy =
       this.storageStrategyFactory.getStrategy(storageStrategyName);
@@ -44,8 +49,8 @@ export class FileService {
     await file.addNewVersion(
       content,
       userId,
-      new Metadata(metadata),
       storageStrategy,
+      metadata ? new Metadata(metadata) : undefined,
     );
 
     return this.fileRepository.save(file);

@@ -4,24 +4,24 @@ import { Metadata } from './metadata.vo';
 export class Version extends BaseEntity {
   private readonly versionNumber: number;
   private readonly mimeType: string;
-  private readonly metadata: Metadata;
   private readonly storageStrategyName: string;
   private readonly storageIdentifier: string;
+  private readonly metadata: Metadata | null;
 
   constructor(
     versionNumber: number,
     mimeType: string,
-    metadata: Metadata,
     storageStrategyName: string,
     storageIdentifier: string,
+    metadata?: Metadata,
     id?: string,
   ) {
     super(id);
     this.versionNumber = versionNumber;
     this.mimeType = mimeType;
-    this.metadata = metadata;
     this.storageStrategyName = storageStrategyName;
     this.storageIdentifier = storageIdentifier;
+    this.metadata = metadata ?? null;
   }
 
   public getVersionNumber(): number {
@@ -32,7 +32,7 @@ export class Version extends BaseEntity {
     return this.mimeType;
   }
 
-  public getMetadata(): Metadata {
+  public getMetadata(): Metadata | null {
     return this.metadata;
   }
 
