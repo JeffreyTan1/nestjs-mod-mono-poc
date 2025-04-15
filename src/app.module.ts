@@ -5,6 +5,7 @@ import { DatabaseConfigModule } from './common/database-config/database-config.m
 import { AuthModule } from './auth/auth.module';
 import { UtilsModule } from './common/utils/utils.module';
 import { UserModule } from './user/user.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     UtilsModule,
     UserModule,
+    FileModule,
   ],
   controllers: [AppController],
 })
