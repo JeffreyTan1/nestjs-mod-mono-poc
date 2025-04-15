@@ -85,11 +85,11 @@ export class File extends BaseAggregate {
     this.history.push(activity);
   }
 
-  public delete(userId: string, reason?: string): void {
+  public softDelete(userId: string, reason?: string): void {
     this.softDeleted = true;
 
     const activity = new Activity(
-      Operation.DELETE,
+      Operation.SOFT_DELETE,
       this.currentVersion,
       null,
       userId,

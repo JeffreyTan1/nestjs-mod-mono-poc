@@ -1,5 +1,5 @@
 export enum Operation {
   NEW_VERSION = 'NEW_VERSION',
-  DELETE = 'DELETE',
+  SOFT_DELETE = 'SOFT_DELETE',
   RESTORE_VERSION = 'RESTORE_VERSION',
 }

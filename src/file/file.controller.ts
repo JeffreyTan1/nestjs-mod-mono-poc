@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FileService } from './file.service';
 import { ParseUUIDV4Pipe } from '@/common/utils/parse-uuid-v4.pipe';
+import { CreateFileDto } from './dto/create-file.dto';
+import { AddFileVersionDto } from './dto/add-file-version.dto';
 
 @Controller('file')
 export class FileController {
@@ -16,10 +18,17 @@ export class FileController {
     return this.fileService.findById(id);
   }
 
-  //TODO: add body
+  @Post()
+  create(@Body() createFileDto: CreateFileDto) {
+    // return this.fileService.create(createFileDto);
+  }
+
   @Post(':id/version')
-  addNewVersion(@Param('id', new ParseUUIDV4Pipe()) id: string) {
-    return this.fileService.addNewVersion(id);
+  addNewVersion(
+    @Param('id', new ParseUUIDV4Pipe()) id: string,
+    @Body() addFileVersionDto: AddFileVersionDto,
+  ) {
+    // return this.fileService.addNewVersion(id, addFileVersionDto);
   }
 
   //TODO: add body
@@ -28,7 +37,7 @@ export class FileController {
     @Param('id', new ParseUUIDV4Pipe()) id: string,
     @Param('versionId', new ParseUUIDV4Pipe()) versionId: string,
   ) {
-    return this.fileService.restoreVersion(id, versionId);
+    // return this.fileService.restoreVersion(id, versionId);
   }
 
   @Delete(':id')
