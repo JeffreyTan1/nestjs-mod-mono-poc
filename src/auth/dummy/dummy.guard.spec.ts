@@ -20,7 +20,7 @@ describe('DummyGuard', () => {
   it('should return true and set user when valid email:id token is provided', async () => {
     const guard = new DummyGuard(mockUserService);
     const user = new User('test@example.com', '123');
-    mockUserService.findOne.mockResolvedValue(user);
+    mockUserService.findByEmail.mockResolvedValue(user);
 
     const request: UserRequest = {
       headers: {
@@ -69,7 +69,7 @@ describe('DummyGuard', () => {
 
   it('should return false when user is not found', async () => {
     const guard = new DummyGuard(mockUserService);
-    mockUserService.findOne.mockRejectedValue(
+    mockUserService.findByEmail.mockRejectedValue(
       new NotFoundException('User not found'),
     );
 

@@ -11,7 +11,7 @@ export class UserService {
     return await this.userRepository.save(new User(createUserDto.email));
   }
 
-  async findOne(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -19,8 +19,8 @@ export class UserService {
     return user;
   }
 
-  async remove(email: string): Promise<void> {
-    const user = await this.findOne(email);
+  async deleteByEmail(email: string): Promise<void> {
+    const user = await this.findByEmail(email);
     return this.userRepository.delete(user);
   }
 }

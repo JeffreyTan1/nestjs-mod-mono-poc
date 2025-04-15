@@ -27,8 +27,8 @@ export class UserController {
   }
 
   @Get(':email')
-  async findOne(@Param('email', ParseEmailPipe) email: string) {
-    const user = await this.userService.findOne(email);
+  async findByEmail(@Param('email', ParseEmailPipe) email: string) {
+    const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -36,8 +36,8 @@ export class UserController {
   }
 
   @Delete(':email')
-  async remove(@Param('email', ParseEmailPipe) email: string) {
-    await this.userService.remove(email);
+  async deleteByEmail(@Param('email', ParseEmailPipe) email: string) {
+    await this.userService.deleteByEmail(email);
   }
 
   private toUserDto(user: User): UserDto {

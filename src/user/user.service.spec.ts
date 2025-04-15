@@ -49,13 +49,13 @@ describe('UserService', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findByEmail', () => {
     it('should return a user when found', async () => {
       const email = 'test@example.com';
       const mockUser = new User(email);
       userRepository.findByEmail.mockResolvedValue(mockUser);
 
-      const result = await service.findOne(email);
+      const result = await service.findByEmail(email);
 
       expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
       expect(result).toBe(mockUser);
@@ -65,19 +65,21 @@ describe('UserService', () => {
       const email = 'nonexistent@example.com';
       userRepository.findByEmail.mockResolvedValue(null);
 
-      await expect(service.findOne(email)).rejects.toThrow(NotFoundException);
+      await expect(service.findByEmail(email)).rejects.toThrow(
+        NotFoundException,
+      );
       expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
     });
   });
 
-  describe('remove', () => {
-    it('should remove a user', async () => {
+  describe('deleteByEmail', () => {
+    it('should delete a user', async () => {
       const email = 'test@example.com';
       const mockUser = new User(email);
       userRepository.findByEmail.mockResolvedValue(mockUser);
       userRepository.delete.mockResolvedValue(undefined);
 
-      await service.remove(email);
+      await service.deleteByEmail(email);
 
       expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
       expect(userRepository.delete).toHaveBeenCalledWith(mockUser);
@@ -87,7 +89,9 @@ describe('UserService', () => {
       const email = 'nonexistent@example.com';
       userRepository.findByEmail.mockResolvedValue(null);
 
-      await expect(service.remove(email)).rejects.toThrow(NotFoundException);
+      await expect(service.deleteByEmail(email)).rejects.toThrow(
+        NotFoundException,
+      );
       expect(userRepository.findByEmail).toHaveBeenCalledWith(email);
       expect(userRepository.delete).not.toHaveBeenCalled();
     });

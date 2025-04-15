@@ -62,38 +62,38 @@ describe('UserController', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findByEmail', () => {
     it('should return user dto when user exists', async () => {
       const email = 'test@example.com';
-      jest.spyOn(userService, 'findOne').mockResolvedValue(mockUser);
+      jest.spyOn(userService, 'findByEmail').mockResolvedValue(mockUser);
 
-      const result = await controller.findOne(email);
+      const result = await controller.findByEmail(email);
 
-      expect(userService.findOne).toHaveBeenCalledWith(email);
+      expect(userService.findByEmail).toHaveBeenCalledWith(email);
       expect(result).toEqual(mockUserDto);
     });
 
     it('should throw NotFoundException when user does not exist', async () => {
       const email = 'nonexistent@example.com';
       jest
-        .spyOn(userService, 'findOne')
+        .spyOn(userService, 'findByEmail')
         .mockRejectedValue(new NotFoundException('User not found'));
 
-      await expect(controller.findOne(email)).rejects.toThrow(
+      await expect(controller.findByEmail(email)).rejects.toThrow(
         NotFoundException,
       );
-      expect(userService.findOne).toHaveBeenCalledWith(email);
+      expect(userService.findByEmail).toHaveBeenCalledWith(email);
     });
   });
 
-  describe('remove', () => {
+  describe('deleteByEmail', () => {
     it('should remove user successfully', async () => {
       const email = 'test@example.com';
-      jest.spyOn(userService, 'remove').mockResolvedValue(undefined);
+      jest.spyOn(userService, 'deleteByEmail').mockResolvedValue(undefined);
 
-      await controller.remove(email);
+      await controller.deleteByEmail(email);
 
-      expect(userService.remove).toHaveBeenCalledWith(email);
+      expect(userService.deleteByEmail).toHaveBeenCalledWith(email);
     });
   });
 });

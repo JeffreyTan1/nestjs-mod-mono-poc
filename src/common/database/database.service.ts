@@ -4,7 +4,7 @@ import { createDataSourceOptions } from './create-data-source-options';
 import { TypedConfigService } from '../typed-config/typed-config.service';
 
 @Injectable()
-export class DatabaseConfigService implements TypeOrmOptionsFactory {
+export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private typedConfigService: TypedConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {

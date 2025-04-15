@@ -24,7 +24,7 @@ export class DummyGuard implements CanActivate {
 
     try {
       const { email } = this.decryptToken(token);
-      const user = await this.userService.findOne(email);
+      const user = await this.userService.findByEmail(email);
       if (!user) {
         this.logUnauthenticatedRequest('User not found.');
         return false;
