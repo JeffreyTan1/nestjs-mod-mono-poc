@@ -29,7 +29,7 @@ export class DummyGuard implements CanActivate {
         this.logUnauthenticatedRequest('User not found.');
         return false;
       }
-      request.user = user;
+      request.userId = user.getId();
       return true;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {

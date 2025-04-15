@@ -1,6 +1,6 @@
 import { IsJSON, IsString } from 'class-validator';
 
-export class AddFileVersionDto {
+export class AddNewVersionDto {
   @IsJSON()
   metadata: string;
 
