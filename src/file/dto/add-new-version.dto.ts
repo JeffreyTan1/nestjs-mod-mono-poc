@@ -1,6 +1,6 @@
 import { IsEnum, IsObject } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { StorageStrategy } from '../domain/storage/storage-strategy.enum';
+import { StorageStrategyType } from '../domain/storage/storage-strategy-type.enum';
 
 export class AddNewVersionDto {
   @ApiProperty()
@@ -8,6 +8,6 @@ export class AddNewVersionDto {
   metadata: Record<string, string>;
 
   @ApiProperty()
-  @IsEnum(StorageStrategy)
-  storageStrategy: StorageStrategy;
+  @IsEnum(StorageStrategyType)
+  storageStrategy: StorageStrategyType;
 }

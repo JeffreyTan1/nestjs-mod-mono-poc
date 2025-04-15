@@ -1,7 +1,7 @@
 import { IStorageStrategy } from '../domain/storage/storage-strategy.interface';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { StorageStrategy } from '../domain/storage/storage-strategy.enum';
+
 export class LocalStorageStrategy implements IStorageStrategy {
   private readonly basePath = join(
     __dirname,
@@ -29,9 +29,5 @@ export class LocalStorageStrategy implements IStorageStrategy {
   async delete(fileId: string, versionNumber: number): Promise<void> {
     const filePath = `${this.basePath}/${fileId}/${versionNumber}.txt`;
     await fs.unlink(filePath);
-  }
-
-  getStorageStrategy(): StorageStrategy {
-    return StorageStrategy.LOCAL;
   }
 }

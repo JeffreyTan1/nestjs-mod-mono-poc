@@ -16,7 +16,7 @@ export class Activity extends BaseEntity {
     newVersion: Version | null,
     userId: string,
     timestamp: Date,
-    reason?: string,
+    reason: string | null,
     id?: string,
   ) {
     super(id);
@@ -25,7 +25,7 @@ export class Activity extends BaseEntity {
     this.newVersion = newVersion;
     this.userId = userId;
     this.timestamp = timestamp;
-    this.reason = reason ?? null;
+    this.reason = reason;
   }
 
   public getOperation(): Operation {

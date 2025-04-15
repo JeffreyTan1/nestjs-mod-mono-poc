@@ -1,10 +1,11 @@
 import { BaseAggregate } from '@/common/domain/base.aggregate';
 import { Version } from './version.entity';
 import { Activity } from './activity/activity.entity';
-import { IStorageStrategy } from './storage/storage-strategy.interface';
 import { Metadata } from './metadata.vo';
 import { Operation } from './activity/operation.enum';
 import { FileType } from './file-type.enum';
+import { StorageStrategyType } from './storage/storage-strategy-type.enum';
+import { IStorageStrategy } from './storage/storage-strategy.interface';
 
 export class File extends BaseAggregate {
   private readonly name: string;
@@ -20,10 +21,10 @@ export class File extends BaseAggregate {
     currentVersion: Version | null,
     versions: Version[],
     history: Activity[],
+    softDeleted: boolean,
     id?: string,
     createdAt?: Date,
     updatedAt?: Date,
-    softDeleted?: boolean,
   ) {
     super(id, createdAt, updatedAt);
     this.name = name;
@@ -31,17 +32,18 @@ export class File extends BaseAggregate {
     this.currentVersion = currentVersion;
     this.versions = versions;
     this.history = history;
-    this.softDeleted = softDeleted ?? false;
+    this.softDeleted = softDeleted;
   }
 
   static create(name: string, fileType: FileType) {
-    const file = new File(name, fileType, null, [], []);
+    const file = new File(name, fileType, null, [], [], false);
     return file;
   }
 
   public async addNewVersion(
-    content: Buffer,
     userId: string,
+    content: Buffer,
+    storageStrategyType: StorageStrategyType,
     storageStrategy: IStorageStrategy,
     metadata: Metadata | null,
   ) {
@@ -57,7 +59,7 @@ export class File extends BaseAggregate {
     const version = new Version(
       versionNumber,
       'TODO: mimetype',
-      storageStrategy.getStorageStrategy(),
+      storageStrategyType,
       storageIdentifier,
       metadata,
     );
@@ -68,6 +70,7 @@ export class File extends BaseAggregate {
       version,
       userId,
       new Date(),
+      null,
     );
 
     this.versions.push(version);
@@ -78,7 +81,7 @@ export class File extends BaseAggregate {
   public restoreVersion(
     version: Version,
     userId: string,
-    reason?: string,
+    reason: string | null,
   ): void {
     this.currentVersion = version;
 
@@ -94,7 +97,7 @@ export class File extends BaseAggregate {
     this.history.push(activity);
   }
 
-  public softDelete(userId: string, reason?: string): void {
+  public softDelete(userId: string, reason: string | null): void {
     this.softDeleted = true;
 
     const activity = new Activity(

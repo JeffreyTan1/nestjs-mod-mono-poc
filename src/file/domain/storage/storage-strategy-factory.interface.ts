@@ -1,6 +1,6 @@
 import { IStorageStrategy } from './storage-strategy.interface';
-import { StorageStrategy } from './storage-strategy.enum';
+import { StorageStrategyType } from './storage-strategy-type.enum';
 
 export interface IStorageStrategyFactory {
-  getStrategy(strategy: StorageStrategy): IStorageStrategy;
+  getStrategy(strategy: StorageStrategyType): IStorageStrategy;
 }

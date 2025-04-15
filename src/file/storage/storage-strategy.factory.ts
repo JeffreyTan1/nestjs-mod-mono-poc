@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { IStorageStrategyFactory } from '../domain/storage/storage-strategy-factory.interface';
 import { IStorageStrategy } from '../domain/storage/storage-strategy.interface';
 import { LocalStorageStrategy } from './local-storage.strategy';
-import { StorageStrategy } from '../domain/storage/storage-strategy.enum';
+import { StorageStrategyType } from '../domain/storage/storage-strategy-type.enum';
 
 @Injectable()
 export class StorageStrategyFactory implements IStorageStrategyFactory {
-  getStrategy(strategy: StorageStrategy): IStorageStrategy {
+  getStrategy(strategy: StorageStrategyType): IStorageStrategy {
     switch (strategy) {
-      case StorageStrategy.LOCAL:
+      case StorageStrategyType.LOCAL:
         return new LocalStorageStrategy();
       default:
         throw new Error(`Storage strategy ${String(strategy)} not found.`);
