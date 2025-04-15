@@ -1,7 +1,6 @@
 import { BaseEntity } from '@/common/domain/base.entity';
 import { Operation } from './operation.enum';
 import { Version } from '../version.entity';
-import { User } from '@/user/domain/user.aggregate';
 
 export class Activity extends BaseEntity {
   private readonly reason: string;
@@ -9,7 +8,7 @@ export class Activity extends BaseEntity {
 
   private readonly previousVersion: Version | null;
   private readonly newVersion: Version;
-  private readonly actor: User;
+  private readonly userId: string;
   private readonly timestamp: Date;
 
   constructor(
@@ -17,7 +16,7 @@ export class Activity extends BaseEntity {
     operation: Operation,
     previousVersion: Version | null,
     newVersion: Version,
-    actor: User,
+    userId: string,
     timestamp: Date,
     id?: string,
   ) {
@@ -26,7 +25,7 @@ export class Activity extends BaseEntity {
     this.operation = operation;
     this.previousVersion = previousVersion;
     this.newVersion = newVersion;
-    this.actor = actor;
+    this.userId = userId;
     this.timestamp = timestamp;
   }
 
@@ -46,8 +45,8 @@ export class Activity extends BaseEntity {
     return this.newVersion;
   }
 
-  public getActor(): User {
-    return this.actor;
+  public getUserId(): string {
+    return this.userId;
   }
 
   public getTimestamp(): Date {

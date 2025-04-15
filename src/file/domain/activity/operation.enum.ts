@@ -1,1 +1,3 @@
-export enum Operation {}
+export enum Operation {
+  CREATE = 'CREATE',
+}
