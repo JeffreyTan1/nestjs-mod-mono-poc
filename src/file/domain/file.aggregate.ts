@@ -4,9 +4,11 @@ import { Activity } from './activity/activity.entity';
 import { IStorageStrategy } from './storage/storage-strategy.interface';
 import { Metadata } from './metadata.vo';
 import { Operation } from './activity/operation.enum';
+import { FileType } from './file-type.enum';
 
 export class File extends BaseAggregate {
   private readonly name: string;
+  private readonly fileType: FileType;
   private currentVersion: Version | null;
   private versions: Version[];
   private history: Activity[];
@@ -14,6 +16,7 @@ export class File extends BaseAggregate {
 
   constructor(
     name: string,
+    fileType: FileType,
     currentVersion: Version | null,
     versions: Version[],
     history: Activity[],
@@ -24,6 +27,7 @@ export class File extends BaseAggregate {
   ) {
     super(id, createdAt, updatedAt);
     this.name = name;
+    this.fileType = fileType;
     this.currentVersion = currentVersion;
     this.versions = versions;
     this.history = history;
@@ -103,6 +107,10 @@ export class File extends BaseAggregate {
   // Getters
   public getName(): string {
     return this.name;
+  }
+
+  public getFileType(): FileType {
+    return this.fileType;
   }
 
   public getCurrentVersion(): Version | null {

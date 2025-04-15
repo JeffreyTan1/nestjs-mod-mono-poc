@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   UseGuards,
   UploadedFile,
+  NotFoundException,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { ParseUUIDV4Pipe } from '@/common/utils/parse-uuid-v4.pipe';
@@ -17,6 +18,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteFileDto } from './dto/delete-file.dto';
 import { UserCtx } from '@/auth/user-context.decorator';
 import { RestoreVersionDto } from './dto/restore-version.dto';
+import { FileDto } from './dto/file.dto';
+import { File } from './domain/file.aggregate';
 
 @UseGuards(DummyGuard)
 @Controller('file')
@@ -24,13 +27,18 @@ export class FileController {
   constructor(private readonly fileService: FileService) {}
 
   @Get()
-  findAll() {
-    return this.fileService.findAll();
+  async findAll() {
+    const files = await this.fileService.findAll();
+    return this.toFileDtos(files);
   }
 
   @Get(':id')
-  findById(@Param('id', new ParseUUIDV4Pipe()) id: string) {
-    return this.fileService.findById(id);
+  async findById(@Param('id', new ParseUUIDV4Pipe()) id: string) {
+    const file = await this.fileService.findById(id);
+    if (!file) {
+      throw new NotFoundException('File not found');
+    }
+    return this.toFileDto(file);
   }
 
   @Post()
@@ -55,7 +63,7 @@ export class FileController {
       id,
       userId,
       file.buffer,
-      JSON.parse(addFileVersionDto.metadata),
+      addFileVersionDto.metadata,
       addFileVersionDto.storageStrategy,
     );
   }
@@ -82,5 +90,18 @@ export class FileController {
     @UserCtx() userId: string,
   ) {
     await this.fileService.softDelete(id, userId, deleteFileDto.reason);
+  }
+
+  private toFileDtos(files: File[]): FileDto[] {
+    return files.map((file) => this.toFileDto(file));
+  }
+
+  private toFileDto(file: File): FileDto {
+    return {
+      id: file.getId(),
+      fileType: file.getFileType(),
+      createdAt: file.getCreatedAt(),
+      updatedAt: file.getUpdatedAt(),
+    };
   }
 }
