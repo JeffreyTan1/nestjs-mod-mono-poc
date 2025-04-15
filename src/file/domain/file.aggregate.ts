@@ -9,28 +9,30 @@ export class File extends BaseAggregate {
   private readonly name: string;
   private currentVersion: Version | null;
   private versions: Version[];
-  private activityHistory: Activity[];
+  private history: Activity[];
+  private softDeleted: boolean;
 
   constructor(
     name: string,
     currentVersion: Version | null,
     versions: Version[],
-    activityHistory: Activity[],
+    history: Activity[],
     id?: string,
     createdAt?: Date,
     updatedAt?: Date,
+    softDeleted?: boolean,
   ) {
     super(id, createdAt, updatedAt);
     this.name = name;
     this.currentVersion = currentVersion;
     this.versions = versions;
-    this.activityHistory = activityHistory;
+    this.history = history;
+    this.softDeleted = softDeleted ?? false;
   }
 
   public addNewVersion(
     content: Buffer,
     userId: string,
-    reason: string,
     metadata: Metadata,
     storageStrategy: IStorageStrategy,
   ) {
@@ -42,10 +44,9 @@ export class File extends BaseAggregate {
       storageStrategy,
     );
     this.versions.push(version);
-    this.activityHistory.push(
+    this.history.push(
       new Activity(
-        reason,
-        Operation.CREATE,
+        Operation.NEW_VERSION,
         this.currentVersion,
         version,
         userId,
@@ -54,6 +55,41 @@ export class File extends BaseAggregate {
     );
     this.currentVersion = version;
   }
+
+  public restoreVersion(
+    version: Version,
+    userId: string,
+    reason?: string,
+  ): void {
+    this.currentVersion = version;
+    this.history.push(
+      new Activity(
+        Operation.RESTORE,
+        this.currentVersion,
+        version,
+        userId,
+        new Date(),
+        reason,
+      ),
+    );
+  }
+
+  public delete(userId: string, reason?: string): void {
+    this.softDeleted = true;
+
+    this.history.push(
+      new Activity(
+        Operation.DELETE,
+        this.currentVersion,
+        null,
+        userId,
+        new Date(),
+        reason,
+      ),
+    );
+  }
+
+  // Getters
 
   public getName(): string {
     return this.name;
@@ -68,11 +104,7 @@ export class File extends BaseAggregate {
   }
 
   public getHistory(): Activity[] {
-    return this.activityHistory;
-  }
-
-  public delete(): void {
-    throw new Error('Not implemented');
+    return this.history;
   }
 
   private getNextVersionNumber(): number {

@@ -5,7 +5,7 @@ export class DatabaseBase64Store
   extends BaseEntity
   implements IStorageStrategy
 {
-  public readonly identifier: string;
+  private readonly identifier: string;
   private readonly base64: string;
 
   constructor(base64: string, id?: string) {

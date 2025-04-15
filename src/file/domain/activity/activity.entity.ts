@@ -3,33 +3,32 @@ import { Operation } from './operation.enum';
 import { Version } from '../version.entity';
 
 export class Activity extends BaseEntity {
-  private readonly reason: string;
   private readonly operation: Operation;
-
   private readonly previousVersion: Version | null;
-  private readonly newVersion: Version;
+  private readonly newVersion: Version | null;
   private readonly userId: string;
   private readonly timestamp: Date;
+  private readonly reason: string | null;
 
   constructor(
-    reason: string,
     operation: Operation,
     previousVersion: Version | null,
-    newVersion: Version,
+    newVersion: Version | null,
     userId: string,
     timestamp: Date,
+    reason?: string,
     id?: string,
   ) {
     super(id);
-    this.reason = reason;
     this.operation = operation;
     this.previousVersion = previousVersion;
     this.newVersion = newVersion;
     this.userId = userId;
     this.timestamp = timestamp;
+    this.reason = reason ?? null;
   }
 
-  public getReason(): string {
+  public getReason(): string | null {
     return this.reason;
   }
 
@@ -41,7 +40,7 @@ export class Activity extends BaseEntity {
     return this.previousVersion;
   }
 
-  public getNewVersion(): Version {
+  public getNewVersion(): Version | null {
     return this.newVersion;
   }
 
