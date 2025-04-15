@@ -1,25 +1,27 @@
 import { BaseEntity } from '@/common/domain/base.entity';
 import { Metadata } from './metadata.vo';
-import { IStorageStrategy } from './storage/storage-strategy.interface';
 
 export class Version extends BaseEntity {
   private readonly versionNumber: number;
   private readonly mimeType: string;
   private readonly metadata: Metadata;
-  private readonly storageStrategy: IStorageStrategy;
+  private readonly storageStrategyName: string;
+  private readonly storageIdentifier: string;
 
   constructor(
     versionNumber: number,
     mimeType: string,
     metadata: Metadata,
-    storageStrategy: IStorageStrategy,
+    storageStrategyName: string,
+    storageIdentifier: string,
     id?: string,
   ) {
     super(id);
     this.versionNumber = versionNumber;
     this.mimeType = mimeType;
     this.metadata = metadata;
-    this.storageStrategy = storageStrategy;
+    this.storageStrategyName = storageStrategyName;
+    this.storageIdentifier = storageIdentifier;
   }
 
   public getVersionNumber(): number {
@@ -34,7 +36,11 @@ export class Version extends BaseEntity {
     return this.metadata;
   }
 
-  public getStorageStrategy(): IStorageStrategy {
-    return this.storageStrategy;
+  public getStorageStrategyName(): string {
+    return this.storageStrategyName;
+  }
+
+  public getStorageIdentifier(): string {
+    return this.storageIdentifier;
   }
 }

@@ -30,7 +30,7 @@ export class File extends BaseAggregate {
     this.softDeleted = softDeleted ?? false;
   }
 
-  public addNewVersion(
+  public async addNewVersion(
     content: Buffer,
     userId: string,
     metadata: Metadata,
@@ -38,24 +38,32 @@ export class File extends BaseAggregate {
   ) {
     const versionNumber = this.getNextVersionNumber();
 
+    const storageIdentifier = await storageStrategy.storeAndReturnIdentifier(
+      this.id,
+      versionNumber,
+      content,
+    );
+
     // TODO: get mime type from content, store in the storage strategy
     const version = new Version(
       versionNumber,
       'TODO: mimetype',
       metadata,
-      storageStrategy,
+      storageStrategy.getName(),
+      storageIdentifier,
     );
+
+    const activity = new Activity(
+      Operation.NEW_VERSION,
+      this.currentVersion,
+      version,
+      userId,
+      new Date(),
+    );
+
     this.versions.push(version);
-    this.history.push(
-      new Activity(
-        Operation.NEW_VERSION,
-        this.currentVersion,
-        version,
-        userId,
-        new Date(),
-      ),
-    );
     this.currentVersion = version;
+    this.history.push(activity);
   }
 
   public restoreVersion(
@@ -64,35 +72,35 @@ export class File extends BaseAggregate {
     reason?: string,
   ): void {
     this.currentVersion = version;
-    this.history.push(
-      new Activity(
-        Operation.RESTORE_VERSION,
-        this.currentVersion,
-        version,
-        userId,
-        new Date(),
-        reason,
-      ),
+
+    const activity = new Activity(
+      Operation.RESTORE_VERSION,
+      this.currentVersion,
+      version,
+      userId,
+      new Date(),
+      reason,
     );
+
+    this.history.push(activity);
   }
 
   public delete(userId: string, reason?: string): void {
     this.softDeleted = true;
 
-    this.history.push(
-      new Activity(
-        Operation.DELETE,
-        this.currentVersion,
-        null,
-        userId,
-        new Date(),
-        reason,
-      ),
+    const activity = new Activity(
+      Operation.DELETE,
+      this.currentVersion,
+      null,
+      userId,
+      new Date(),
+      reason,
     );
+
+    this.history.push(activity);
   }
 
   // Getters
-
   public getName(): string {
     return this.name;
   }
@@ -107,6 +115,10 @@ export class File extends BaseAggregate {
 
   public getHistory(): Activity[] {
     return this.history;
+  }
+
+  public getSoftDeleted(): boolean {
+    return this.softDeleted;
   }
 
   private getNextVersionNumber(): number {

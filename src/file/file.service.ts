@@ -1,29 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFileDto } from './dto/create-file.dto';
+import { IFileRepository } from './domain/file-repository.interface';
+import { IStorageStrategyFactory } from './domain/storage/storage-strategy-factory.interface';
 
 @Injectable()
 export class FileService {
-  create(createFileDto: CreateFileDto) {
-    return 'This action adds a new file';
-  }
+  constructor(
+    private readonly fileRepository: IFileRepository,
+    private readonly storageStrategyFactory: IStorageStrategyFactory,
+  ) {}
 
   findAll() {
-    return `This action returns all file`;
+    return this.fileRepository.findAll();
   }
 
   findById(id: string) {
-    return `This action returns a #${id} file`;
+    return this.fileRepository.findById(id);
+  }
+
+  create() {
+    return this.fileRepository.create();
   }
 
   addNewVersion(id: string) {
-    return `This action adds a new version to a #${id} file`;
+    return this.fileRepository.addNewVersion(id);
   }
 
   restoreVersion(id: string, versionId: string) {
-    return `This action restores a #${id} file to version #${versionId}`;
+    return this.fileRepository.restoreVersion(id, versionId);
   }
 
   delete(id: string) {
-    return `This action removes a #${id} file`;
+    return this.fileRepository.delete(id);
   }
 }
