@@ -1,15 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FileService } from './file.service';
 import { CreateFileDto } from './dto/create-file.dto';
-import { UpdateFileDto } from './dto/update-file.dto';
+import { ParseUUIDV4Pipe } from '@/common/utils/parse-uuid-v4.pipe';
 
 @Controller('file')
 export class FileController {
@@ -26,17 +18,27 @@ export class FileController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fileService.findOne(+id);
+  findById(@Param('id', new ParseUUIDV4Pipe()) id: string) {
+    return this.fileService.findById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
-    return this.fileService.update(+id, updateFileDto);
+  //TODO: add body
+  @Post(':id/version')
+  addNewVersion(@Param('id', new ParseUUIDV4Pipe()) id: string) {
+    return this.fileService.addNewVersion(id);
+  }
+
+  //TODO: add body
+  @Post(':id/version/:versionId/restore')
+  restoreVersion(
+    @Param('id', new ParseUUIDV4Pipe()) id: string,
+    @Param('versionId', new ParseUUIDV4Pipe()) versionId: string,
+  ) {
+    return this.fileService.restoreVersion(id, versionId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fileService.remove(+id);
+  delete(@Param('id', new ParseUUIDV4Pipe()) id: string) {
+    return this.fileService.delete(id);
   }
 }
