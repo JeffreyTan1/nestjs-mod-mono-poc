@@ -41,7 +41,7 @@
     },
     "/user/{email}": {
       "get": {
-        "operationId": "UserController_findOne",
+        "operationId": "UserController_findByEmail",
         "parameters": [
           {
             "name": "email",
@@ -62,7 +62,7 @@
         ]
       },
       "delete": {
-        "operationId": "UserController_remove",
+        "operationId": "UserController_deleteByEmail",
         "parameters": [
           {
             "name": "email",
@@ -84,6 +84,18 @@
       }
     },
     "/file": {
+      "get": {
+        "operationId": "FileController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "File"
+        ]
+      },
       "post": {
         "operationId": "FileController_create",
         "parameters": [],
@@ -105,23 +117,11 @@
         "tags": [
           "File"
         ]
-      },
-      "get": {
-        "operationId": "FileController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "File"
-        ]
       }
     },
     "/file/{id}": {
       "get": {
-        "operationId": "FileController_findOne",
+        "operationId": "FileController_findById",
         "parameters": [
           {
             "name": "id",
@@ -140,9 +140,11 @@
         "tags": [
           "File"
         ]
-      },
-      "patch": {
-        "operationId": "FileController_update",
+      }
+    },
+    "/file/{id}/version": {
+      "post": {
+        "operationId": "FileController_addNewVersion",
         "parameters": [
           {
             "name": "id",
@@ -158,22 +160,65 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateFileDto"
+                "$ref": "#/components/schemas/AddNewVersionDto"
               }
             }
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           }
         },
         "tags": [
           "File"
         ]
-      },
-      "delete": {
-        "operationId": "FileController_remove",
+      }
+    },
+    "/file/{id}/version/{versionId}/restore": {
+      "post": {
+        "operationId": "FileController_restoreVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "versionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RestoreVersionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "File"
+        ]
+      }
+    },
+    "/file/{id}/delete": {
+      "post": {
+        "operationId": "FileController_softDelete",
         "parameters": [
           {
             "name": "id",
@@ -184,8 +229,18 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFileDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           }
         },
@@ -218,11 +273,63 @@
       },
       "CreateFileDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "fileType": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "storageStrategyType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "fileType",
+          "metadata",
+          "storageStrategyType"
+        ]
       },
-      "UpdateFileDto": {
+      "AddNewVersionDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "metadata": {
+            "type": "object"
+          },
+          "storageStrategyType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metadata",
+          "storageStrategyType"
+        ]
+      },
+      "RestoreVersionDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "DeleteFileDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ]
       }
     }
   }
