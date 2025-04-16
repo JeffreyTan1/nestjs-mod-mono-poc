@@ -1,6 +1,8 @@
 import { BaseEntityOrm } from '@/common/database/base-entity.orm';
 import { MetadataProps } from '@/file/domain/metadata.vo';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { FileOrm } from './file.orm';
+import { ActivityOrm } from './activity.orm';
 
 @Entity('version')
 export class VersionOrm extends BaseEntityOrm {
@@ -16,6 +18,15 @@ export class VersionOrm extends BaseEntityOrm {
   @Column()
   storageIdentifier: string;
 
-  @Column('jsonb')
+  @Column('jsonb', { nullable: true })
   metadata: MetadataProps | null;
+
+  @ManyToOne(() => FileOrm, (file) => file.versions)
+  file: FileOrm;
+
+  @OneToMany(() => ActivityOrm, (activity) => activity.fromVersion)
+  activityAsFrom: ActivityOrm[];
+
+  @OneToMany(() => ActivityOrm, (activity) => activity.toVersion)
+  activityAsTo: ActivityOrm[];
 }
