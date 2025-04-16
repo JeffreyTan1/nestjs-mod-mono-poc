@@ -1,4 +1,4 @@
-import { IStorageStrategy } from '../domain/storage/storage-strategy.interface';
+import { IStorageStrategy } from '../../domain/storage/storage-strategy.interface';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 

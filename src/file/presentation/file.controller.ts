@@ -8,7 +8,7 @@ import {
   UseGuards,
   UploadedFile,
 } from '@nestjs/common';
-import { FileService } from './file.service';
+import { FileService } from '../application/file.service';
 import { ParseUUIDV4Pipe } from '@common/utils/parse-uuid-v4.pipe';
 import { CreateFileDto } from './dto/create-file.dto';
 import { AddNewVersionDto } from './dto/add-new-version.dto';
@@ -18,7 +18,7 @@ import { DeleteFileDto } from './dto/delete-file.dto';
 import { UserCtx } from '@auth/user-context.decorator';
 import { RestoreVersionDto } from './dto/restore-version.dto';
 import { FileDto } from './dto/file.dto';
-import { File } from './domain/file.aggregate';
+import { File } from '../domain/file.aggregate';
 
 @UseGuards(JwtGuard)
 @Controller('file')

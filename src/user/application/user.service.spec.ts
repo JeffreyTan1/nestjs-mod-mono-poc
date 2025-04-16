@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { UserRepository } from './persistence/user.repository';
-import { User } from './domain/user.aggregate';
-import { CreateUserDto } from './dto/create-user.dto';
+import { UserRepository } from '../infrastructure/user.repository';
+import { User } from '../domain/user.aggregate';
+import { CreateUserDto } from '../presentation/dto/create-user.dto';
 import { NotFoundException } from '@nestjs/common';
-import { IUserRepository } from './domain/user-repository.interface';
+import { IUserRepository } from '../domain/user-repository.interface';
 
 describe('UserService', () => {
   let service: UserService;

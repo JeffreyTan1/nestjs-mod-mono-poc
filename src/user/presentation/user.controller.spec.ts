@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { UserController } from '../presentation/user.controller';
+import { UserService } from '../application/user.service';
 import { NotFoundException } from '@nestjs/common';
-import { User } from './domain/user.aggregate';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserDto } from './dto/user.dto';
+import { User } from '../domain/user.aggregate';
+import { CreateUserDto } from '../presentation/dto/create-user.dto';
+import { UserDto } from '../presentation/dto/user.dto';
 
 describe('UserController', () => {
   let controller: UserController;

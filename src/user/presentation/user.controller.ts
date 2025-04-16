@@ -8,11 +8,11 @@ import {
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from '../application/user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
-import { User } from './domain/user.aggregate';
-import { ParseEmailPipe } from './utils/parse-email.pipe';
+import { User } from '../domain/user.aggregate';
+import { ParseEmailPipe } from '../utils/parse-email.pipe';
 import { JwtGuard } from '@/auth/jwt/jwt.guard';
 
 @UseGuards(JwtGuard)

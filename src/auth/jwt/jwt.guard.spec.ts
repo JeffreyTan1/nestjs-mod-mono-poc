@@ -1,7 +1,7 @@
 import { ExecutionContext, NotFoundException } from '@nestjs/common';
 import { JwtGuard } from './jwt.guard';
 import { UserRequest } from '../types';
-import { UserService } from '@user/user.service';
+import { UserService } from '@user/application/user.service';
 import { User } from '@user/domain/user.aggregate';
 
 describe('JwtGuard', () => {
