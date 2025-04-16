@@ -251,14 +251,21 @@
     }
   },
   "info": {
-    "title": "NestJS API",
-    "description": "NestJS API",
+    "title": "My API",
+    "description": "API documentation",
     "version": "1.0",
     "contact": {}
   },
   "tags": [],
   "servers": [],
   "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
     "schemas": {
       "CreateUserDto": {
         "type": "object",
