@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { File } from '../domain/file.aggregate';
 import { FileOrm } from './orm/file.orm';
-import { parseEnumStrict } from '@/common/utils/parseEnumStrict';
+import { parseEnumStrict } from '@common/utils/parseEnumStrict';
 import { FileType } from '../domain/file-type.enum';
 import { VersionOrm } from './orm/version.orm';
 import { Version } from '../domain/version.entity';

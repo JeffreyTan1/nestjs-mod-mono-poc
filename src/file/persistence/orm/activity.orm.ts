@@ -1,4 +1,4 @@
-import { BaseEntityOrm } from '@/common/database/base-entity.orm';
+import { BaseEntityOrm } from '@common/database/base-entity.orm';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { FileOrm } from './file.orm';
 import { VersionOrm } from './version.orm';

@@ -6,11 +6,11 @@ import * as fs from 'fs';
 // Configuration
 const MIGRATIONS_DIR = path.resolve(
   __dirname,
-  '../src/common/database-config/migrations',
+  '../src/common/database/migrations',
 );
 const DATASOURCE_PATH = path.resolve(
   __dirname,
-  '../src/common/database-config/typeorm-datasource.ts',
+  '../src/common/database/typeorm-datasource.ts',
 );
 
 // Ensure migrations directory exists

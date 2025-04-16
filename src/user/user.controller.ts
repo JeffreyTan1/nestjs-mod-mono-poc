@@ -13,7 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { User } from './domain/user.aggregate';
 import { ParseEmailPipe } from './utils/parse-email.pipe';
-import { DummyGuard } from '@/auth/dummy/dummy.guard';
+import { DummyGuard } from '@auth/dummy/dummy.guard';
 
 @UseGuards(DummyGuard)
 @Controller('user')

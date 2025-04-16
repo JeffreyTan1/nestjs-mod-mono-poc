@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { UserRequest } from '../types';
-import { UserService } from '@/user/user.service';
+import { UserService } from '@user/user.service';
 
 @Injectable()
 export class DummyGuard implements CanActivate {

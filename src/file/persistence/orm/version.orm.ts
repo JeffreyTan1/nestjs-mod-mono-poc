@@ -1,5 +1,5 @@
-import { BaseEntityOrm } from '@/common/database/base-entity.orm';
-import { MetadataProps } from '@/file/domain/metadata.vo';
+import { BaseEntityOrm } from '@common/database/base-entity.orm';
+import { MetadataProps } from '../../domain/metadata.vo';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { FileOrm } from './file.orm';
 import { ActivityOrm } from './activity.orm';

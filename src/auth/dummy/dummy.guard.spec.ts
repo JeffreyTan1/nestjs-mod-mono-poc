@@ -1,8 +1,8 @@
 import { ExecutionContext, NotFoundException } from '@nestjs/common';
 import { DummyGuard } from './dummy.guard';
 import { UserRequest } from '../types';
-import { UserService } from '@/user/user.service';
-import { User } from '@/user/domain/user.aggregate';
+import { UserService } from '@user/user.service';
+import { User } from '@user/domain/user.aggregate';
 
 describe('DummyGuard', () => {
   let mockUserService: jest.Mocked<UserService>;

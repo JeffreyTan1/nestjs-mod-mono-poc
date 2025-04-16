@@ -1,4 +1,4 @@
-import { BaseValueObject } from '@/common/domain/base.vo';
+import { BaseValueObject } from '@common/domain/base.vo';
 
 export type MetadataProps = Record<string, string>;
 

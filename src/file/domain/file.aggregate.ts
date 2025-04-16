@@ -1,4 +1,4 @@
-import { BaseAggregate } from '@/common/domain/base.aggregate';
+import { BaseAggregate } from '@common/domain/base.aggregate';
 import { Version } from './version.entity';
 import { Activity } from './activity/activity.entity';
 import { Metadata } from './metadata.vo';
