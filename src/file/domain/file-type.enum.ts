@@ -1,4 +1,4 @@
 export enum FileType {
-  IMAGE = 'Image',
-  DOCUMENT = 'Document',
+  IMAGE = 'image',
+  DOCUMENT = 'document',
 }
