@@ -6,15 +6,15 @@ This project is a proof of concept for a modular monolith architecture using Nes
 
 ## Features
 
-- [ ] Modular architecture with clear boundaries
-- [ ] Shared infrastructure services
-- [ ] Centralized configuration management
-- [ ] Integrated authentication and authorization
-- [ ] Database migrations and seeding
-- [ ] Comprehensive logging and monitoring
-- [ ] API documentation with Swagger
-- [ ] End-to-end testing infrastructure
-- [ ] CI/CD pipeline configuration
+- Modular architecture with clear boundaries
+- Shared infrastructure services
+- Centralized configuration management
+- Integrated authentication and authorization
+- Database migrations and seeding
+- Comprehensive logging and monitoring
+- API documentation with Swagger
+- End-to-end testing infrastructure
+- CI/CD pipeline configuration
 
 ## Project setup
 

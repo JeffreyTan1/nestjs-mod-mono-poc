@@ -8,6 +8,7 @@ export class LocalStorageStrategy implements IStorageStrategy {
     '..',
     '..',
     '..',
+    '..',
     'file-system-storage',
   );
 
@@ -16,7 +17,9 @@ export class LocalStorageStrategy implements IStorageStrategy {
     versionNumber: number,
     content: Buffer,
   ): Promise<string> {
-    const filePath = `${this.basePath}/${fileId}/${versionNumber}.txt`;
+    const dirPath = `${this.basePath}/${fileId}`;
+    await fs.mkdir(dirPath, { recursive: true });
+    const filePath = `${dirPath}/${versionNumber}.txt`;
     await fs.writeFile(filePath, content);
     return filePath;
   }
