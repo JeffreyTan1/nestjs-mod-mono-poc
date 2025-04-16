@@ -13,9 +13,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { User } from './domain/user.aggregate';
 import { ParseEmailPipe } from './utils/parse-email.pipe';
-import { DummyGuard } from '@auth/dummy/dummy.guard';
+import { JwtGuard } from '@/auth/jwt/jwt.guard';
 
-@UseGuards(DummyGuard)
+@UseGuards(JwtGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

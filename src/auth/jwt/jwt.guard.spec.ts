@@ -1,10 +1,10 @@
 import { ExecutionContext, NotFoundException } from '@nestjs/common';
-import { DummyGuard } from './dummy.guard';
+import { JwtGuard } from './jwt.guard';
 import { UserRequest } from '../types';
 import { UserService } from '@user/user.service';
 import { User } from '@user/domain/user.aggregate';
 
-describe('DummyGuard', () => {
+describe('JwtGuard', () => {
   let mockUserService: jest.Mocked<UserService>;
 
   beforeEach(() => {
@@ -14,11 +14,11 @@ describe('DummyGuard', () => {
   });
 
   it('should be defined', () => {
-    expect(new DummyGuard(mockUserService)).toBeDefined();
+    expect(new JwtGuard(mockUserService)).toBeDefined();
   });
 
   it('should return true and set user when valid email:id token is provided', async () => {
-    const guard = new DummyGuard(mockUserService);
+    const guard = new JwtGuard(mockUserService);
     const user = new User('test@example.com', '123');
     mockUserService.findByEmail.mockResolvedValue(user);
 
@@ -34,11 +34,11 @@ describe('DummyGuard', () => {
     };
     const result = await guard.canActivate(context as ExecutionContext);
     expect(result).toBe(true);
-    expect(request.user).toEqual(user);
+    expect(request.userId).toEqual(user.getId());
   });
 
   it('should return false when no token is provided', async () => {
-    const guard = new DummyGuard(mockUserService);
+    const guard = new JwtGuard(mockUserService);
     const request: UserRequest = {
       headers: {},
     } as UserRequest;
@@ -52,7 +52,7 @@ describe('DummyGuard', () => {
   });
 
   it('should return false when invalid token format is provided', async () => {
-    const guard = new DummyGuard(mockUserService);
+    const guard = new JwtGuard(mockUserService);
     const request: UserRequest = {
       headers: {
         authorization: 'invalid-token',
@@ -68,7 +68,7 @@ describe('DummyGuard', () => {
   });
 
   it('should return false when user is not found', async () => {
-    const guard = new DummyGuard(mockUserService);
+    const guard = new JwtGuard(mockUserService);
     mockUserService.findByEmail.mockRejectedValue(
       new NotFoundException('User not found'),
     );

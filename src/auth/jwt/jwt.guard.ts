@@ -8,8 +8,8 @@ import { UserRequest } from '../types';
 import { UserService } from '@user/user.service';
 
 @Injectable()
-export class DummyGuard implements CanActivate {
-  private readonly logger = new Logger(DummyGuard.name);
+export class JwtGuard implements CanActivate {
+  private readonly logger = new Logger(JwtGuard.name);
 
   constructor(private readonly userService: UserService) {}
 
