@@ -89,12 +89,29 @@ async function runTypeOrmCommand(
       args.push(DATASOURCE_PATH);
     }
 
-    console.log(`Running: typeorm-ts-node-commonjs ${args.join(' ')}`);
+    console.log(
+      `Running: node --require ts-node/register ./node_modules/typeorm/cli.js ${args.join(' ')}`,
+    );
 
-    const childProcess = spawn('npx', ['typeorm-ts-node-commonjs', ...args], {
-      stdio: 'inherit',
-      shell: true,
-    });
+    const childProcess = spawn(
+      'node',
+      [
+        '--require',
+        'ts-node/register',
+        '--require',
+        'tsconfig-paths/register',
+        './node_modules/typeorm/cli.js',
+        ...args,
+      ],
+      {
+        stdio: 'inherit',
+        shell: true,
+        env: {
+          ...process.env,
+          TS_NODE_PROJECT: path.resolve(__dirname, '../tsconfig.json'),
+        },
+      },
+    );
 
     childProcess.on('close', (code) => {
       if (code === 0) {
