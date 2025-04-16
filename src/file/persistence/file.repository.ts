@@ -32,6 +32,6 @@ export class FileRepository implements IFileRepository {
 
   async delete(file: File): Promise<void> {
     const fileOrm = this.fileMapper.toOrm(file);
-    await this.fileRepository.delete(fileOrm);
+    await this.fileRepository.remove(fileOrm);
   }
 }

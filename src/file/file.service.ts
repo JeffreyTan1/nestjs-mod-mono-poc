@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IFileRepository } from './domain/file-repository.interface';
-import { IStorageStrategyFactory } from './domain/storage/storage-strategy-factory.interface';
 import { Metadata, MetadataProps } from './domain/metadata.vo';
 import { File } from './domain/file.aggregate';
 import { FileType } from './domain/file-type.enum';
 import { StorageStrategyType } from './domain/storage/storage-strategy-type.enum';
+import { FileRepository } from './persistence/file.repository';
+import { StorageStrategyFactory } from './storage/storage-strategy.factory';
 
 @Injectable()
 export class FileService {
   constructor(
-    private readonly fileRepository: IFileRepository,
-    private readonly storageStrategyFactory: IStorageStrategyFactory,
+    private readonly fileRepository: FileRepository,
+    private readonly storageStrategyFactory: StorageStrategyFactory,
   ) {}
 
   async findAll() {

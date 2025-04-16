@@ -36,6 +36,6 @@ export class UserRepository implements IUserRepository {
 
   async delete(user: User): Promise<void> {
     const userOrm = this.userMapper.toOrm(user);
-    await this.userRepository.delete(userOrm);
+    await this.userRepository.remove(userOrm);
   }
 }
