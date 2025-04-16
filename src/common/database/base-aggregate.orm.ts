@@ -1,12 +1,12 @@
-import { PrimaryColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { PrimaryColumn, Column } from 'typeorm';
 
 export abstract class BaseAggregateOrm {
   @PrimaryColumn('uuid')
   id: string;
 
-  @CreateDateColumn()
+  @Column()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @Column()
   updatedAt: Date;
 }

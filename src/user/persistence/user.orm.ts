@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseAggregateOrm } from '@/common/database/base-aggregate.orm';
 
 @Entity('user')
-export class UserOrm {
-  @PrimaryColumn('uuid')
-  id: string;
-
+export class UserOrm extends BaseAggregateOrm {
   @Column()
   email: string;
 }

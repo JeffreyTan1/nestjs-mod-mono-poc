@@ -12,6 +12,8 @@ export class UserMapper {
     return {
       id: domain.getId(),
       email: domain.getEmail(),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
     };
   }
 }

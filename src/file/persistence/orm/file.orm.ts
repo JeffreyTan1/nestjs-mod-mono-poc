@@ -1,10 +1,10 @@
-import { BaseEntityOrm } from '@/common/database/base-entity.orm';
+import { BaseAggregateOrm } from '@/common/database/base-aggregate.orm';
 import { Column, Entity, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { VersionOrm } from './version.orm';
 import { ActivityOrm } from './activity.orm';
 
 @Entity('file')
-export class FileOrm extends BaseEntityOrm {
+export class FileOrm extends BaseAggregateOrm {
   @Column()
   name: string;
 
