@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FileOrm } from './file.orm';
+import { FileOrm } from './orm/file.orm';
 import { FileMapper } from './file.mapper';
 import { IFileRepository } from '../domain/file-repository.interface';
 import { File } from '../domain/file.aggregate';

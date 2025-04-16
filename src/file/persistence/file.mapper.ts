@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { File } from '../domain/file.aggregate';
-import { FileOrm } from './file.orm';
+import { FileOrm } from './orm/file.orm';
 
 @Injectable()
 export class FileMapper {
