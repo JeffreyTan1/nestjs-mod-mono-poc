@@ -14,7 +14,7 @@ export class ActivityOrm extends BaseEntityOrm {
   @Column()
   timestamp: Date;
 
-  @Column({ nullable: true })
+  @Column('varchar', { nullable: true })
   reason: string | null;
 
   @ManyToOne(() => FileOrm, (file) => file.history)
