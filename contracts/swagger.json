@@ -15,30 +15,6 @@
         ]
       }
     },
-    "/user": {
-      "post": {
-        "operationId": "UserController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "User"
-        ]
-      }
-    },
     "/user/{email}": {
       "get": {
         "operationId": "UserController_findByEmail",
@@ -80,6 +56,30 @@
         },
         "tags": [
           "User"
+        ]
+      }
+    },
+    "/backdoor/create-user": {
+      "post": {
+        "operationId": "BackdoorController_createUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Backdoor"
         ]
       }
     },

@@ -1,14 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from '../presentation/user.controller';
-import { UserService } from '../application/user.service';
+import { UserController } from './user.controller';
+import { UserService } from '../../application/user.service';
 import { NotFoundException } from '@nestjs/common';
-import { User } from '../domain/user.aggregate';
-import { CreateUserDto } from '../presentation/dto/create-user.dto';
-import { UserDto } from '../presentation/dto/user.dto';
+import { User } from '../../domain/user.aggregate';
+import { UserDto } from '../dto/user.dto';
+import { UserDtoMapper } from '../user-dto.mapper';
 
 describe('UserController', () => {
   let controller: UserController;
   let userService: UserService;
+  let userDtoMapper: UserDtoMapper;
 
   const mockUser: User = {
     getId: jest.fn().mockReturnValue('1'),
@@ -31,9 +32,14 @@ describe('UserController', () => {
         {
           provide: UserService,
           useValue: {
-            create: jest.fn(),
-            findOne: jest.fn(),
-            remove: jest.fn(),
+            findByEmail: jest.fn(),
+            deleteByEmail: jest.fn(),
+          },
+        },
+        {
+          provide: UserDtoMapper,
+          useValue: {
+            toDto: jest.fn().mockReturnValue(mockUserDto),
           },
         },
       ],
@@ -41,25 +47,11 @@ describe('UserController', () => {
 
     controller = module.get<UserController>(UserController);
     userService = module.get<UserService>(UserService);
+    userDtoMapper = module.get<UserDtoMapper>(UserDtoMapper);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  });
-
-  describe('create', () => {
-    it('should create a user and return user dto', async () => {
-      const createUserDto: CreateUserDto = {
-        email: 'test@example.com',
-      };
-
-      jest.spyOn(userService, 'create').mockResolvedValue(mockUser);
-
-      const result = await controller.create(createUserDto);
-
-      expect(userService.create).toHaveBeenCalledWith(createUserDto);
-      expect(result).toEqual(mockUserDto);
-    });
   });
 
   describe('findByEmail', () => {
@@ -70,10 +62,11 @@ describe('UserController', () => {
       const result = await controller.findByEmail(email);
 
       expect(userService.findByEmail).toHaveBeenCalledWith(email);
+      expect(userDtoMapper.toDto).toHaveBeenCalledWith(mockUser);
       expect(result).toEqual(mockUserDto);
     });
 
-    it('should throw NotFoundException when user does not exist', async () => {
+    it('should propagate NotFoundException when user does not exist', async () => {
       const email = 'nonexistent@example.com';
       jest
         .spyOn(userService, 'findByEmail')

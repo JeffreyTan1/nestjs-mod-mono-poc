@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from '../presentation/dto/create-user.dto';
 import { UserRepository } from '../infrastructure/user.repository';
 import { User } from '../domain/user.aggregate';
 
@@ -7,8 +6,8 @@ import { User } from '../domain/user.aggregate';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    return await this.userRepository.save(new User(createUserDto.email));
+  async create(email: string): Promise<User> {
+    return await this.userRepository.save(new User(email));
   }
 
   async findByEmail(email: string): Promise<User> {
