@@ -1,5 +1,5 @@
-import { User } from '../domain/user.aggregate';
-import { UserDto } from './dto/user.dto';
+import { User } from '../../domain/user.aggregate';
+import { UserDto } from './user.dto';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class UserDtoMapper {

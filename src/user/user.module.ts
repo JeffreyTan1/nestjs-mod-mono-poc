@@ -6,7 +6,7 @@ import { UserRepository } from './infrastructure/user.repository';
 import { UserMapper } from './infrastructure/user.mapper';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserOrm } from './infrastructure/user.orm';
-import { UserDtoMapper } from './presentation/user-dto.mapper';
+import { UserDtoMapper } from './presentation/dto/user-dto.mapper';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserOrm])],

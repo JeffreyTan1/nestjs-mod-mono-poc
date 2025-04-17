@@ -17,24 +17,26 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DeleteFileDto } from './dto/delete-file.dto';
 import { UserCtx } from '@auth/user-context.decorator';
 import { RestoreVersionDto } from './dto/restore-version.dto';
-import { FileDto } from './dto/file.dto';
-import { File } from '../domain/file.aggregate';
+import { FileDtoMapper } from './dto/file-dto.mapper';
 
 @UseGuards(JwtGuard)
 @Controller('file')
 export class FileController {
-  constructor(private readonly fileService: FileService) {}
+  constructor(
+    private readonly fileService: FileService,
+    private readonly fileDtoMapper: FileDtoMapper,
+  ) {}
 
   @Get()
   async findAll() {
     const files = await this.fileService.findAll();
-    return this.toFileDtoList(files);
+    return this.fileDtoMapper.toDtoList(files);
   }
 
   @Get(':id')
   async findById(@Param('id', new ParseUUIDV4Pipe()) id: string) {
     const file = await this.fileService.findById(id);
-    return this.toFileDto(file);
+    return this.fileDtoMapper.toDto(file);
   }
 
   @Post()
@@ -54,7 +56,7 @@ export class FileController {
       metadata,
     );
 
-    return this.toFileDto(createdFile);
+    return this.fileDtoMapper.toDto(createdFile);
   }
 
   @Post(':id/version')
@@ -94,19 +96,5 @@ export class FileController {
   ) {
     const { reason } = deleteFileDto;
     await this.fileService.softDelete(id, userId, reason);
-  }
-
-  private toFileDtoList(files: File[]): FileDto[] {
-    return files.map((file) => this.toFileDto(file));
-  }
-
-  private toFileDto(file: File): FileDto {
-    return {
-      id: file.getId(),
-      name: file.getName(),
-      fileType: file.getFileType(),
-      createdAt: file.getCreatedAt(),
-      updatedAt: file.getUpdatedAt(),
-    };
   }
 }

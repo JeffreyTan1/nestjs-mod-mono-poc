@@ -4,7 +4,7 @@ import { UserService } from '../../application/user.service';
 import { NotFoundException } from '@nestjs/common';
 import { User } from '../../domain/user.aggregate';
 import { UserDto } from '../dto/user.dto';
-import { UserDtoMapper } from '../user-dto.mapper';
+import { UserDtoMapper } from '../dto/user-dto.mapper';
 
 describe('UserController', () => {
   let controller: UserController;

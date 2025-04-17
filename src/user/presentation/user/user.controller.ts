@@ -9,7 +9,7 @@ import {
 import { UserService } from '../../application/user.service';
 import { ParseEmailPipe } from '../../utils/parse-email.pipe';
 import { JwtGuard } from '@/auth/jwt/jwt.guard';
-import { UserDtoMapper } from '../user-dto.mapper';
+import { UserDtoMapper } from '../dto/user-dto.mapper';
 @UseGuards(JwtGuard)
 @Controller('user')
 export class UserController {

@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserService } from '../../application/user.service';
-import { UserDtoMapper } from '../user-dto.mapper';
+import { UserDtoMapper } from '../dto/user-dto.mapper';
 
 @Controller('backdoor')
 export class BackdoorController {

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BackdoorController } from './backdoor.controller';
 import { UserService } from '../../application/user.service';
-import { UserDtoMapper } from '../user-dto.mapper';
+import { UserDtoMapper } from '../dto/user-dto.mapper';
 import { User } from '../../domain/user.aggregate';
 import { UserDto } from '../dto/user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
