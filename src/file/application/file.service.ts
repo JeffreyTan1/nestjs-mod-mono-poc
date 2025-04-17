@@ -34,17 +34,17 @@ export class FileService {
     metadata?: MetadataProps,
   ) {
     const file = File.create(name, fileType);
+    const savedFile = await this.fileRepository.save(file);
 
-    await this.fileRepository.save(file);
-    await this.addNewVersion(
-      file.getId(),
+    const fileWithVersion = await this.addNewVersion(
+      savedFile.getId(),
       userId,
       content,
       storageStrategyType,
       metadata,
     );
 
-    return file;
+    return fileWithVersion;
   }
 
   async addNewVersion(
@@ -67,7 +67,7 @@ export class FileService {
       metadata ? new Metadata(metadata) : null,
     );
 
-    await this.fileRepository.save(file);
+    return await this.fileRepository.save(file);
   }
 
   async restoreVersion(

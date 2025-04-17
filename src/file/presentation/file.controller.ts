@@ -39,13 +39,13 @@ export class FileController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  create(
+  async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() createFileDto: CreateFileDto,
     @UserCtx() userId: string,
   ) {
     const { name, fileType, metadata, storageStrategyType } = createFileDto;
-    return this.fileService.create(
+    const createdFile = await this.fileService.create(
       userId,
       name,
       fileType,
@@ -53,18 +53,20 @@ export class FileController {
       storageStrategyType,
       metadata,
     );
+
+    return this.toFileDto(createdFile);
   }
 
   @Post(':id/version')
   @UseInterceptors(FileInterceptor('file'))
-  addNewVersion(
+  async addNewVersion(
     @Param('id', new ParseUUIDV4Pipe()) id: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() addFileVersionDto: AddNewVersionDto,
     @UserCtx() userId: string,
   ) {
     const { storageStrategyType, metadata } = addFileVersionDto;
-    return this.fileService.addNewVersion(
+    await this.fileService.addNewVersion(
       id,
       userId,
       file.buffer,
@@ -74,14 +76,14 @@ export class FileController {
   }
 
   @Post(':id/version/:versionId/restore')
-  restoreVersion(
+  async restoreVersion(
     @Param('id', new ParseUUIDV4Pipe()) id: string,
     @Param('versionId', new ParseUUIDV4Pipe()) versionId: string,
     @Body() restoreVersionDto: RestoreVersionDto,
     @UserCtx() userId: string,
   ) {
     const { reason } = restoreVersionDto;
-    return this.fileService.restoreVersion(id, userId, versionId, reason);
+    await this.fileService.restoreVersion(id, userId, versionId, reason);
   }
 
   @Post(':id/delete')

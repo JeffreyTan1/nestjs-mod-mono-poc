@@ -15,7 +15,16 @@ export class FileRepository implements IFileRepository {
   ) {}
 
   async findById(id: string): Promise<File | null> {
-    const file = await this.fileRepository.findOne({ where: { id } });
+    const file = await this.fileRepository.findOne({
+      where: { id },
+      relations: [
+        'versions',
+        'history',
+        'history.fromVersion',
+        'history.toVersion',
+        'currentVersion',
+      ],
+    });
     return file ? this.fileMapper.toDomain(file) : null;
   }
 

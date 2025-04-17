@@ -17,16 +17,18 @@ export class ActivityOrm extends BaseEntityOrm {
   @Column('varchar', { nullable: true })
   reason: string | null;
 
-  @ManyToOne(() => FileOrm, (file) => file.history)
+  @ManyToOne(() => FileOrm, (file) => file.history, { onDelete: 'CASCADE' })
   file: FileOrm;
 
   @ManyToOne(() => VersionOrm, (version) => version.activityAsFrom, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   fromVersion: VersionOrm | null;
 
   @ManyToOne(() => VersionOrm, (version) => version.activityAsTo, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   toVersion: VersionOrm | null;
 }

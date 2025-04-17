@@ -1,5 +1,5 @@
 import { BaseAggregateOrm } from '@common/database/base-aggregate.orm';
-import { Column, Entity, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { VersionOrm } from './version.orm';
 import { ActivityOrm } from './activity.orm';
 
@@ -14,13 +14,17 @@ export class FileOrm extends BaseAggregateOrm {
   @Column({ default: false })
   softDeleted: boolean;
 
-  @OneToOne(() => VersionOrm, { nullable: true })
+  @OneToOne(() => VersionOrm, {
+    nullable: true,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn()
   currentVersion: VersionOrm | null;
 
-  @OneToMany(() => VersionOrm, (version) => version.file)
+  @OneToMany(() => VersionOrm, (version) => version.file, { cascade: true })
   versions: VersionOrm[];
 
-  @OneToMany(() => ActivityOrm, (activity) => activity.file)
+  @OneToMany(() => ActivityOrm, (activity) => activity.file, { cascade: true })
   history: ActivityOrm[];
 }

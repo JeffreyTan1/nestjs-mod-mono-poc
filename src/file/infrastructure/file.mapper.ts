@@ -14,12 +14,20 @@ import { Operation } from '../domain/activity/operation.enum';
 @Injectable()
 export class FileMapper {
   toDomain(orm: FileOrm): File {
+    const fileType = parseEnumStrict(FileType, orm.fileType);
+    const currentVersion = orm.currentVersion
+      ? this.toDomainVersion(orm.currentVersion)
+      : null;
+    const versions = orm.versions.map(this.toDomainVersion);
+    const history = orm.history.map((activity) =>
+      this.toDomainActivity(activity),
+    );
     return new File(
       orm.name,
-      parseEnumStrict(FileType, orm.fileType),
-      orm.currentVersion ? this.toDomainVersion(orm.currentVersion) : null,
-      orm.versions.map(this.toDomainVersion),
-      orm.history.map(this.toDomainActivity),
+      fileType,
+      currentVersion,
+      versions,
+      history,
       orm.softDeleted,
       orm.id,
       orm.createdAt,
@@ -28,21 +36,33 @@ export class FileMapper {
   }
 
   private toDomainVersion(orm: VersionOrm): Version {
+    const storageStrategy = parseEnumStrict(
+      StorageStrategyType,
+      orm.storageStrategy,
+    );
+    const metadata = orm.metadata ? new Metadata(orm.metadata) : null;
     return new Version(
       orm.versionNumber,
       orm.mimeType,
-      parseEnumStrict(StorageStrategyType, orm.storageStrategy),
+      storageStrategy,
       orm.storageIdentifier,
-      orm.metadata ? new Metadata(orm.metadata) : null,
+      metadata,
       orm.id,
     );
   }
 
   private toDomainActivity(orm: ActivityOrm): Activity {
+    const operation = parseEnumStrict(Operation, orm.operation);
+    const fromVersion = orm.fromVersion
+      ? this.toDomainVersion(orm.fromVersion)
+      : null;
+    const toVersion = orm.toVersion
+      ? this.toDomainVersion(orm.toVersion)
+      : null;
     return new Activity(
-      parseEnumStrict(Operation, orm.operation),
-      orm.fromVersion ? this.toDomainVersion(orm.fromVersion) : null,
-      orm.toVersion ? this.toDomainVersion(orm.toVersion) : null,
+      operation,
+      fromVersion,
+      toVersion,
       orm.userId,
       orm.timestamp,
       orm.reason,
@@ -87,6 +107,7 @@ export class FileMapper {
 
   private toOrmVersion(domain: Version): VersionOrm {
     const metadata = domain.getMetadata();
+    const metadataValue = metadata ? metadata.getValue() : null;
     const orm = new VersionOrm();
 
     orm.id = domain.getId();
@@ -94,7 +115,7 @@ export class FileMapper {
     orm.mimeType = domain.getMimeType();
     orm.storageStrategy = domain.getStorageStrategy();
     orm.storageIdentifier = domain.getStorageIdentifier();
-    orm.metadata = metadata ? metadata.getValue() : null;
+    orm.metadata = metadataValue;
 
     return orm;
   }

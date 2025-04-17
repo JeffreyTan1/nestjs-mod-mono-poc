@@ -21,12 +21,16 @@ export class VersionOrm extends BaseEntityOrm {
   @Column('jsonb', { nullable: true })
   metadata: MetadataProps | null;
 
-  @ManyToOne(() => FileOrm, (file) => file.versions)
+  @ManyToOne(() => FileOrm, (file) => file.versions, { onDelete: 'CASCADE' })
   file: FileOrm;
 
-  @OneToMany(() => ActivityOrm, (activity) => activity.fromVersion)
+  @OneToMany(() => ActivityOrm, (activity) => activity.fromVersion, {
+    cascade: true,
+  })
   activityAsFrom: ActivityOrm[];
 
-  @OneToMany(() => ActivityOrm, (activity) => activity.toVersion)
+  @OneToMany(() => ActivityOrm, (activity) => activity.toVersion, {
+    cascade: true,
+  })
   activityAsTo: ActivityOrm[];
 }
