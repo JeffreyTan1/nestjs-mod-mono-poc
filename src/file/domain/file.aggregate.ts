@@ -1,12 +1,11 @@
 import { BaseAggregate } from '@common/domain/base.aggregate';
 import { Version } from './version.entity';
-import { Activity } from './activity/activity.entity';
+import { Activity } from './activity.entity';
 import { Metadata } from './metadata.vo';
-import { Operation } from './activity/operation.enum';
+import { Operation } from './operation.enum';
 import { FileType } from './file-type.enum';
-import { StorageStrategyType } from './storage/storage-strategy-type.enum';
-import { IStorageStrategy } from './storage/storage-strategy.interface';
-
+import { IStorageStrategy } from '../infrastructure/storage/storage-strategy.interface';
+import { StorageStrategyType } from './storage-strategy-type.enum';
 export class File extends BaseAggregate {
   private readonly name: string;
   private readonly fileType: FileType;

@@ -5,11 +5,11 @@ import { parseEnumStrict } from '@common/utils/parseEnumStrict';
 import { FileType } from '../domain/file-type.enum';
 import { VersionOrm } from './orm/version.orm';
 import { Version } from '../domain/version.entity';
-import { StorageStrategyType } from '../domain/storage/storage-strategy-type.enum';
+import { StorageStrategyType } from '../domain/storage-strategy-type.enum';
 import { ActivityOrm } from './orm/activity.orm';
 import { Metadata } from '../domain/metadata.vo';
-import { Activity } from '../domain/activity/activity.entity';
-import { Operation } from '../domain/activity/operation.enum';
+import { Activity } from '../domain/activity.entity';
+import { Operation } from '../domain/operation.enum';
 
 @Injectable()
 export class FileMapper {

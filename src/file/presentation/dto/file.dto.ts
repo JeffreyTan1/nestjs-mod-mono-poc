@@ -1,4 +1,4 @@
-import { MetadataProps } from '@/file/domain/metadata.vo';
+import { MetadataProps } from '../../domain/metadata.vo';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class FileDto {

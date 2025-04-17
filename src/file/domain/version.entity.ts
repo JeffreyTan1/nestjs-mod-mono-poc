@@ -1,6 +1,6 @@
 import { BaseEntity } from '@common/domain/base.entity';
 import { Metadata } from './metadata.vo';
-import { StorageStrategyType } from './storage/storage-strategy-type.enum';
+import { StorageStrategyType } from './storage-strategy-type.enum';
 
 export class Version extends BaseEntity {
   private readonly versionNumber: number;

@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Metadata, MetadataProps } from '../domain/metadata.vo';
 import { File } from '../domain/file.aggregate';
 import { FileType } from '../domain/file-type.enum';
-import { StorageStrategyType } from '../domain/storage/storage-strategy-type.enum';
+import { StorageStrategyType } from '../domain/storage-strategy-type.enum';
 import { FileRepository } from '../infrastructure/file.repository';
 import { StorageStrategyFactory } from '../infrastructure/storage/storage-strategy.factory';
-import { FileProcessingService } from './file-processing.service';
+import { FileProcessingService } from '../infrastructure/file-processing.service';
 
 @Injectable()
 export class FileService {

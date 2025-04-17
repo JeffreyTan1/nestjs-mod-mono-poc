@@ -3,11 +3,11 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileOrm } from './orm/file.orm';
 import { FileMapper } from './file.mapper';
-import { IFileRepository } from '../domain/file-repository.interface';
 import { File } from '../domain/file.aggregate';
+import { IRepository } from '@/common/database/repository.interface';
 
 @Injectable()
-export class FileRepository implements IFileRepository {
+export class FileRepository implements IRepository<File> {
   constructor(
     @InjectRepository(FileOrm)
     private readonly fileRepository: Repository<FileOrm>,

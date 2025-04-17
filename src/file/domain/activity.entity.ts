@@ -1,6 +1,6 @@
 import { BaseEntity } from '@common/domain/base.entity';
 import { Operation } from './operation.enum';
-import { Version } from '../version.entity';
+import { Version } from './version.entity';
 
 export class Activity extends BaseEntity {
   private readonly operation: Operation;

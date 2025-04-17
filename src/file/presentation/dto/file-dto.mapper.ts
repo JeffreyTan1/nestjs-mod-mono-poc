@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { File } from '../../domain/file.aggregate';
 import { FileDto, VersionDto, ActivityDto } from './file.dto';
 import { Version } from '../../domain/version.entity';
-import { Activity } from '../../domain/activity/activity.entity';
+import { Activity } from '../../domain/activity.entity';
 
 @Injectable()
 export class FileDtoMapper {
