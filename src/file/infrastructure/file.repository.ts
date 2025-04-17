@@ -29,7 +29,15 @@ export class FileRepository implements IFileRepository {
   }
 
   async findAll(): Promise<File[]> {
-    const files = await this.fileRepository.find();
+    const files = await this.fileRepository.find({
+      relations: [
+        'versions',
+        'history',
+        'history.fromVersion',
+        'history.toVersion',
+        'currentVersion',
+      ],
+    });
     return files.map((file) => this.fileMapper.toDomain(file));
   }
 

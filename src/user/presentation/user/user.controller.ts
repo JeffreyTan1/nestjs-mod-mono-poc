@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Delete,
-  NotFoundException,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from '../../application/user.service';
 import { ParseEmailPipe } from '../../utils/parse-email.pipe';
 import { JwtGuard } from '@/auth/jwt/jwt.guard';
@@ -21,9 +14,6 @@ export class UserController {
   @Get(':email')
   async findByEmail(@Param('email', ParseEmailPipe) email: string) {
     const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
     return this.userDtoMapper.toDto(user);
   }
 
