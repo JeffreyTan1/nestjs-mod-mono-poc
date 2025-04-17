@@ -1,3 +1,4 @@
+import { MetadataProps } from '@/file/domain/metadata.vo';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class FileDto {
@@ -46,7 +47,7 @@ export class VersionDto {
   url: string;
 
   @ApiProperty()
-  metadata: MetadataDto | null;
+  metadata: MetadataProps | null;
 }
 
 export class ActivityDto {
@@ -70,12 +71,4 @@ export class ActivityDto {
 
   @ApiProperty()
   reason: string | null;
-}
-
-export class MetadataDto {
-  @ApiProperty()
-  key: string;
-
-  @ApiProperty()
-  value: string;
 }

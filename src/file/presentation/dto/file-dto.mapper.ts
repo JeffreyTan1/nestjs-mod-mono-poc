@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { File } from '../../domain/file.aggregate';
-import { FileDto, VersionDto, ActivityDto, MetadataDto } from './file.dto';
+import { FileDto, VersionDto, ActivityDto } from './file.dto';
 import { Version } from '../../domain/version.entity';
 import { Activity } from '../../domain/activity/activity.entity';
-import { Metadata } from '../../domain/metadata.vo';
 
 @Injectable()
 export class FileDtoMapper {
@@ -36,7 +35,7 @@ export class FileDtoMapper {
       mimeType: version.getMimeType(),
       storageStrategy: version.getStorageStrategy().toString(),
       url: version.getStorageIdentifier(),
-      metadata: metadata ? this.toMetadataDto(metadata) : null,
+      metadata: metadata ? metadata.getValue() : null,
     };
   }
 
@@ -54,18 +53,5 @@ export class FileDtoMapper {
       timestamp: activity.getTimestamp(),
       reason: activity.getReason(),
     };
-  }
-
-  //TODO: fix this
-  private toMetadataDto(metadata: Metadata): MetadataDto {
-    const metadataProps = metadata.getValue();
-    const entries = Object.entries(metadataProps);
-
-    if (entries.length > 0) {
-      const [key, value] = entries[0];
-      return { key, value };
-    }
-
-    return { key: '', value: '' };
   }
 }

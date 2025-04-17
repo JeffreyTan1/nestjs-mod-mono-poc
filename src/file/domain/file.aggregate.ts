@@ -56,7 +56,6 @@ export class File extends BaseAggregate {
       content,
     );
 
-    // TODO: get mime type from content, store in the storage strategy
     const version = new Version(
       versionNumber,
       mimeType,
