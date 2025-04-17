@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { IUserRepository } from '../domain/user-repository.interface';
 import { User } from '../domain/user.aggregate';
 import { UserOrm } from './user.orm';
 import { UserMapper } from './user.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IRepository } from '@/common/database/repository.interface';
 
 @Injectable()
-export class UserRepository implements IUserRepository {
+export class UserRepository implements IRepository<User> {
   constructor(
     @InjectRepository(UserOrm)
     private readonly userRepository: Repository<UserOrm>,
