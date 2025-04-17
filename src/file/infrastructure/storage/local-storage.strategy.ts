@@ -19,18 +19,18 @@ export class LocalStorageStrategy implements IStorageStrategy {
   ): Promise<string> {
     const dirPath = `${this.basePath}/${fileId}`;
     await fs.mkdir(dirPath, { recursive: true });
-    const filePath = `${dirPath}/${versionNumber}.txt`;
+    const filePath = `${dirPath}/${versionNumber}`;
     await fs.writeFile(filePath, content);
     return filePath;
   }
 
   async retrieve(fileId: string, versionNumber: number): Promise<Buffer> {
-    const filePath = `${this.basePath}/${fileId}/${versionNumber}.txt`;
+    const filePath = `${this.basePath}/${fileId}/${versionNumber}`;
     return fs.readFile(filePath);
   }
 
   async delete(fileId: string, versionNumber: number): Promise<void> {
-    const filePath = `${this.basePath}/${fileId}/${versionNumber}.txt`;
+    const filePath = `${this.basePath}/${fileId}/${versionNumber}`;
     await fs.unlink(filePath);
   }
 }

@@ -43,6 +43,7 @@ export class File extends BaseAggregate {
   public async addNewVersion(
     userId: string,
     content: Buffer,
+    mimeType: string,
     storageStrategyType: StorageStrategyType,
     storageStrategy: IStorageStrategy,
     metadata: Metadata | null,
@@ -58,7 +59,7 @@ export class File extends BaseAggregate {
     // TODO: get mime type from content, store in the storage strategy
     const version = new Version(
       versionNumber,
-      'TODO: mimetype',
+      mimeType,
       storageStrategyType,
       storageIdentifier,
       metadata,

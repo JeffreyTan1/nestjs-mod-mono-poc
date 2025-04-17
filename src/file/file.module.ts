@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StorageStrategyFactory } from './infrastructure/storage/storage-strategy.factory';
 import { AuthModule } from '@auth/auth.module';
 import { FileDtoMapper } from './presentation/dto/file-dto.mapper';
+import { FileProcessingService } from './application/file-processing.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([FileOrm]), AuthModule],
@@ -17,6 +18,7 @@ import { FileDtoMapper } from './presentation/dto/file-dto.mapper';
     FileMapper,
     StorageStrategyFactory,
     FileDtoMapper,
+    FileProcessingService,
   ],
   controllers: [FileController],
 })

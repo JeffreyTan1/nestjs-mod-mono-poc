@@ -5,12 +5,14 @@ import { FileType } from '../domain/file-type.enum';
 import { StorageStrategyType } from '../domain/storage/storage-strategy-type.enum';
 import { FileRepository } from '../infrastructure/file.repository';
 import { StorageStrategyFactory } from '../infrastructure/storage/storage-strategy.factory';
+import { FileProcessingService } from './file-processing.service';
 
 @Injectable()
 export class FileService {
   constructor(
     private readonly fileRepository: FileRepository,
     private readonly storageStrategyFactory: StorageStrategyFactory,
+    private readonly fileProcessingService: FileProcessingService,
   ) {}
 
   async findAll() {
@@ -58,10 +60,12 @@ export class FileService {
       this.storageStrategyFactory.getStrategy(storageStrategyType);
 
     const file = await this.findById(id);
+    const mimeType = await this.fileProcessingService.getFileMimeType(content);
 
     await file.addNewVersion(
       userId,
       content,
+      mimeType,
       storageStrategyType,
       storageStrategy,
       metadata ? new Metadata(metadata) : null,
