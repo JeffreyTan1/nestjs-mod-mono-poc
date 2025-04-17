@@ -15,20 +15,23 @@ export class JwtGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<UserRequest>();
-    const token = this.extractTokenFromHeader(request);
-
-    if (!token) {
-      this.logUnauthenticatedRequest('No token found.');
-      return false;
-    }
 
     try {
+      const token = this.extractTokenFromHeader(request);
+
+      if (!token) {
+        this.logUnauthenticatedRequest('No token found.');
+        return false;
+      }
+
       const { email } = this.decryptToken(token);
+
       const user = await this.userService.findByEmail(email);
       if (!user) {
         this.logUnauthenticatedRequest('User not found.');
         return false;
       }
+
       request.userId = user.getId();
       return true;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
