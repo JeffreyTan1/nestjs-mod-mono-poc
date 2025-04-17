@@ -56,6 +56,7 @@ export class FileDtoMapper {
     };
   }
 
+  //TODO: fix this
   private toMetadataDto(metadata: Metadata): MetadataDto {
     const metadataProps = metadata.getValue();
     const entries = Object.entries(metadataProps);
