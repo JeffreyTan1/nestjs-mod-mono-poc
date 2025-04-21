@@ -83,8 +83,6 @@ export class File extends BaseAggregate {
     userId: string,
     reason: string | null,
   ): void {
-    this.currentVersion = version;
-
     const activity = new Activity(
       Operation.RESTORE_VERSION,
       this.currentVersion,
@@ -94,6 +92,7 @@ export class File extends BaseAggregate {
       reason,
     );
 
+    this.currentVersion = version;
     this.history.push(activity);
   }
 
