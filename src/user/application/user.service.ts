@@ -1,10 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserRepository } from '../infrastructure/user.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../domain/user.aggregate';
+import {
+  USER_REPOSITORY,
+  IUserRepository,
+} from '../domain/user-repository.interface';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: IUserRepository,
+  ) {}
 
   async create(email: string): Promise<User> {
     return await this.userRepository.save(new User(email));

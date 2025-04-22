@@ -9,14 +9,22 @@ import { StorageStrategyFactory } from './infrastructure/storage/storage-strateg
 import { AuthModule } from '@auth/auth.module';
 import { FileDtoMapper } from './presentation/dto/file-dto.mapper';
 import { FileProcessingService } from './application/file-processing.service';
+import { FILE_REPOSITORY } from './domain/file-repository.interface';
+import { STORAGE_STRATEGY_FACTORY } from './domain/storage/storage-strategy-factory.interface';
 
 @Module({
   imports: [TypeOrmModule.forFeature([FileOrm]), AuthModule],
   providers: [
+    {
+      provide: FILE_REPOSITORY,
+      useClass: FileRepository,
+    },
+    {
+      provide: STORAGE_STRATEGY_FACTORY,
+      useClass: StorageStrategyFactory,
+    },
     FileService,
-    FileRepository,
     FileMapper,
-    StorageStrategyFactory,
     FileDtoMapper,
     FileProcessingService,
   ],

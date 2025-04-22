@@ -1,17 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Metadata, MetadataProps } from '../domain/metadata.vo';
 import { File } from '../domain/file.aggregate';
 import { FileType } from '../domain/file-type.enum';
 import { StorageStrategyType } from '../domain/storage/storage-strategy-type.enum';
-import { FileRepository } from '../infrastructure/file.repository';
-import { StorageStrategyFactory } from '../infrastructure/storage/storage-strategy.factory';
+import {
+  FILE_REPOSITORY,
+  IFileRepository,
+} from '../domain/file-repository.interface';
+import {
+  IStorageStrategyFactory,
+  STORAGE_STRATEGY_FACTORY,
+} from '../domain/storage/storage-strategy-factory.interface';
 import { FileProcessingService } from './file-processing.service';
 
 @Injectable()
 export class FileService {
   constructor(
-    private readonly fileRepository: FileRepository,
-    private readonly storageStrategyFactory: StorageStrategyFactory,
+    @Inject(FILE_REPOSITORY)
+    private readonly fileRepository: IFileRepository,
+    @Inject(STORAGE_STRATEGY_FACTORY)
+    private readonly storageStrategyFactory: IStorageStrategyFactory,
     private readonly fileProcessingService: FileProcessingService,
   ) {}
 
